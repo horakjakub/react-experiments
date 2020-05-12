@@ -28,6 +28,10 @@ type parseRepsonseFunc = (
   response: YTSearchResponseChannel
 ) => VideoChannelType[];
 
+// eslint-disable-next-line 
+const API_KEY = process.env.REACT_APP_API_KEY;
+debugger;
+
 const parseResponse: parseRepsonseFunc = response => response
   .items
   .map(
