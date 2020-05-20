@@ -1,16 +1,17 @@
 import {useEffect, useState, Dispatch, SetStateAction} from 'react';
 import {debounce} from 'lodash';
+import useFetch, {ApiResponseType} from 'hooks/useFetch';
+import { getYTApiSearchUrl } from 'utils/getYTApiUrl';
 
 export type VideoChannelType = {
-  title: string,
-  description: string,
-  id: string,
-  thumbnailUrl: string,
+  title: string;
+  description: string;
+  id: string;
+  thumbnailUrl: string;
 };
 
 type YTSearchResponseChannel = {
-  items:
-  {
+  items: {
     snippet: {
       channelId: string;
       channelTitle: string;
@@ -18,53 +19,36 @@ type YTSearchResponseChannel = {
       thumbnails: {
         high: {
           url: string;
-        }
-      }
-    }
+        };
+      };
+    };
   }[];
 };
 
 type parseRepsonseFunc = (
-  response: YTSearchResponseChannel
+  response: YTSearchResponseChannel,
 ) => VideoChannelType[];
 
-// eslint-disable-next-line 
-const API_KEY = process.env.REACT_APP_API_KEY;
-debugger;
+const parseResponse: parseRepsonseFunc = response =>
+  response.items.map(({snippet}) => ({
+    title: snippet.channelTitle,
+    id: snippet.channelId,
+    description: snippet.description,
+    thumbnailUrl: snippet.thumbnails.high.url,
+  }));
 
-const parseResponse: parseRepsonseFunc = response => response
-  .items
-  .map(
-    ({snippet}) => ({
-      title: snippet.channelTitle,
-      id: snippet.channelId,
-      description: snippet.description,
-      thumbnailUrl: snippet.thumbnails.high.url,
-    }));
-
-const debouncedSearch =
-  debounce<(searchPhrase: string, pageSize: number, setVideoChannelsFromResponse: (response: YTSearchResponseChannel) => void) => void>(
-    (searchPhrase, pageSize, setVideoChannelsFromResponse) => {
-      if (searchPhrase.length > 2) {
-        fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&part=snippet&type=channel&q=${searchPhrase}&maxResults=${pageSize}`)
-          .then(res => res.json())
-          .then(setVideoChannelsFromResponse);
-      }
-    }, 300);
-
-const useVideoChannels: (pageSize?: number) => {videoChannels: VideoChannelType[], setSearchPhrase: Dispatch<SetStateAction<string>>}
-  = (pageSize = 5) => {
-    const [videoChannels, setVideoChannels] = useState<VideoChannelType[]>([]);
-    const [searchPhrase, setSearchPhrase] = useState<string>('');
-
-    useEffect(() => debouncedSearch(searchPhrase, pageSize, (response) => {setVideoChannels(parseResponse(response));}), [searchPhrase]);
-
-    return {
-      videoChannels,
-      setSearchPhrase,
-    };
+function useVideoChannels(
+  searchPhrase: string | null,
+  resultsNo: number,
+): ApiResponseType<VideoChannelType[]> {
+  const {response, error, isLoading} = useFetch<YTSearchResponseChannel>(
+    searchPhrase ? getYTApiSearchUrl(searchPhrase, resultsNo) : null,
+  );
+  return {
+    response: response !== null ? parseResponse(response) : null,
+    error,
+    isLoading,
   };
+}
 
 export default useVideoChannels;
-
-

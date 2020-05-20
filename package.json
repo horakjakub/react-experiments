@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook -s public",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
-    "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}",
+    "format": "prettier --write src/**/*.{ts,tsx,css}",
     "isready": "npm run format && npm run lint && npm run build"
   },
   "eslintConfig": {

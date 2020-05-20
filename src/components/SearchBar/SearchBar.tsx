@@ -1,7 +1,7 @@
-import React, {FunctionComponent, ChangeEvent, Dispatch, SetStateAction} from 'react';
+import React, { FunctionComponent, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import {Input} from '@rebass/forms';
-import {SearchVideoChannelContext} from '../../services/SearchChannelProvider/SearchChannelProvider';
+import { Input } from '@rebass/forms';
+import { SearchVideoChannelContext } from '../../services/SearchChannelProvider/SearchChannelProvider';
 import useVideoChannels from '../../hooks/useVideoChannels/useVideoChannels';
 
 const Bar: FunctionComponent = styled.div`
@@ -20,7 +20,7 @@ const SearchBarWithConsumer = ({ setSearchPhrase }: { setSearchPhrase: Dispatch<
   return (
     <Bar>
       <SearchVideoChannelContext.Consumer>
-        {({phrase, setPhrase}) => {
+        {({ phrase, setPhrase }) => {
           return (
             <Input
               id='searchVideo'

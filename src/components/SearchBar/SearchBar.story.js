@@ -6,4 +6,4 @@ export default {
   component: SearchBar,
 };
 
-export const Classic = () => (<SearchBar />)
+export const Classic = () => (<SearchBar />);

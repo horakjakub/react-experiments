@@ -1,29 +1,30 @@
-import React from 'react';
-import SearchBar from './SearchBar/SearchBar';
-import {SearchVideoChannelContextProvider, SearchVideoChannelContext} from '../services/SearchChannelProvider/SearchChannelProvider';
-import useVideoChannels, { VideoChannelType} from '../hooks/useVideoChannels/useVideoChannels';
+import React, {Suspense, ReactElement} from 'react';
+import SearchBar from 'components/SearchBar/SearchBar';
+import Spinner from 'components/Spinner/Spinner';
+import {
+  SearchVideoChannelContextProvider,
+  SearchVideoChannelContext,
+} from 'services/SearchChannelProvider/SearchChannelProvider';
+import VideoChannels from 'components/VideoChannels/VideoChannels';
 
 const App = () => {
-  const {setSearchPhrase, videoChannels} = useVideoChannels(10);
   return (
-    <>
-      <SearchVideoChannelContextProvider>
-        <SearchBar setSearchPhrase={setSearchPhrase} />
-        <div>
-          <SearchVideoChannelContext.Consumer>
-            {({phrase}) => (
-              <div>
-                {phrase}
-              </div>
-            )}
-          </SearchVideoChannelContext.Consumer>
-        </div>
-        {
-          videoChannels.map((videoChannel: VideoChannelType) => (<div> {videoChannel.title}</div>))
-        }
-      </SearchVideoChannelContextProvider>
-    </>
-  )
+    <SearchVideoChannelContextProvider>
+      <Suspense fallback={<Spinner />}>
+        <SearchBar setSearchPhrase={() => {}} />
+      </Suspense>
+      <div>
+        <SearchVideoChannelContext.Consumer>
+          {({phrase}) => {
+            if (phrase.length > 2) {
+              return <VideoChannels searchPhrase={phrase} />;
+            }
+            return null;
+          }}
+        </SearchVideoChannelContext.Consumer>
+      </div>
+    </SearchVideoChannelContextProvider>
+  );
 };
 
 export default App;

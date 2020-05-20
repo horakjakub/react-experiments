@@ -1,4 +1,4 @@
-import React, {Context, ReactNode, useState} from 'react';
+import React, { Context, ReactNode, useState } from 'react';
 
 type SearchVideoChannelState = {
   phrase: string;
@@ -17,9 +17,9 @@ export const SearchVideoChannelContext: Context<SearchVideoChannelContext>
   = React.createContext(defaultValue);
 
 export const SearchVideoChannelContextProvider
-  = ({children}: {children: ReactNode}) => {
+  = ({ children }: {children: ReactNode}) => {
     const [state, setState]
-      = useState<SearchVideoChannelState>({phrase: ''});
+      = useState<SearchVideoChannelState>({ phrase: '' });
 
     const setPhrase: (phrase: string) => void = (phrase: string) => {
       setState({
@@ -29,7 +29,7 @@ export const SearchVideoChannelContextProvider
     };
 
     return (
-      <SearchVideoChannelContext.Provider value={{...state, setPhrase}}>
+      <SearchVideoChannelContext.Provider value={{ ...state, setPhrase }}>
         {children}
       </SearchVideoChannelContext.Provider>
     );
