@@ -4,9 +4,29 @@ import {VideoChannelType} from 'hooks/useVideoChannels/useVideoChannels';
 import Videos from 'components/Videos/Videos';
 
 const VideoChannelWrapper = styled.div`
-  display: flex;
+  display: inline-flex;
+  background: white;
+  flex-direction: column;
+  border: 1px solid #f0f0f0;
   &:hover {
     background: grey;
+  }
+`;
+
+const Description = styled.section`
+  padding: 0 1em;
+  height: 10em;
+  h3 { 
+    font-size: 2em;
+    font-family:'PT Sans', sans-serif;
+  }
+`;
+
+const Figure = styled.figure`
+  margin: 0;
+  img {
+    width: 36em;
+    height: 36em;
   }
 `;
 
@@ -20,10 +40,14 @@ function VideoChannel({
 
   return (
     <>
-      <VideoChannelWrapper onClick={ ()=> setShowVideos(!showVideos)}>
-        <img src={thumbnailUrl} width="240" height="180" />
-        <h4> {title} </h4>
-        <p> {description} </p>
+      <VideoChannelWrapper onClick={() => setShowVideos(!showVideos)}>
+        <Figure>
+          <img src={thumbnailUrl} />
+        </Figure>
+        <Description>
+          <h3> {title} </h3>
+          <p> {description} </p>
+        </Description>
       </VideoChannelWrapper>
       {showVideos && <Videos id={id} />}
     </>

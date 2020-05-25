@@ -1,7 +1,7 @@
 import {useEffect, useState, Dispatch, SetStateAction} from 'react';
 import {debounce} from 'lodash';
 import useFetch, {ApiResponseType} from 'hooks/useFetch';
-import { getYTApiSearchUrl } from 'utils/getYTApiUrl';
+import {getYTApiSearchUrl} from 'utils/getYTApiUrl';
 
 export type VideoChannelType = {
   title: string;
@@ -11,6 +11,7 @@ export type VideoChannelType = {
 };
 
 type YTSearchResponseChannel = {
+  nextPageToken: string;
   items: {
     snippet: {
       channelId: string;
@@ -25,27 +26,32 @@ type YTSearchResponseChannel = {
   }[];
 };
 
-type parseRepsonseFunc = (
-  response: YTSearchResponseChannel,
-) => VideoChannelType[];
-
-const parseResponse: parseRepsonseFunc = response =>
-  response.items.map(({snippet}) => ({
-    title: snippet.channelTitle,
-    id: snippet.channelId,
-    description: snippet.description,
-    thumbnailUrl: snippet.thumbnails.high.url,
-  }));
+export function mapToVideoChannels(
+  response: YTSearchResponseChannel | null,
+): VideoChannelType[] {
+  return response?.items
+    ? response.items.map(({snippet}) => ({
+        title: snippet.channelTitle,
+        id: snippet.channelId,
+        description: snippet.description,
+        thumbnailUrl: snippet.thumbnails.high.url,
+      }))
+    : [];
+}
 
 function useVideoChannels(
   searchPhrase: string | null,
   resultsNo: number,
-): ApiResponseType<VideoChannelType[]> {
-  const {response, error, isLoading} = useFetch<YTSearchResponseChannel>(
-    searchPhrase ? getYTApiSearchUrl(searchPhrase, resultsNo) : null,
-  );
+  pageToken: string | null,
+): ApiResponseType<YTSearchResponseChannel | null> {
+  const {response, error, isLoading} = useFetch<YTSearchResponseChannel>({
+    url: searchPhrase
+      ? getYTApiSearchUrl(searchPhrase, resultsNo || 1, pageToken || undefined)
+      : ''
+  });
+
   return {
-    response: response !== null ? parseResponse(response) : null,
+    response,
     error,
     isLoading,
   };

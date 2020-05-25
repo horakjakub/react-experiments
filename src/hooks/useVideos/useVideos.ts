@@ -47,7 +47,7 @@ function useVideos(id: string | null): ApiResponseType<Video[]> {
     response: channelResponse,
     error: channelError,
     isLoading: channelIsLoading,
-  } = useFetch<YTResponse>(id ? getYTApiChannelUrl(id) : null);
+  } = useFetch<YTResponse>({url: id ? getYTApiChannelUrl(id) : null});
 
   const playlistId = mapYTResponseToPlaylistId(channelResponse);
 
@@ -55,14 +55,14 @@ function useVideos(id: string | null): ApiResponseType<Video[]> {
     response: playlistResponse,
     error: playlistError,
     isLoading: playlistIsLoading,
-  } = useFetch<YTResponse>(
-    playlistId ? getYTApiPlaylistItemsUrl(playlistId, 5) : null,
-  );
+  } = useFetch<YTResponse>({
+    url: playlistId ? getYTApiPlaylistItemsUrl(playlistId, 5) : null,
+  });
 
   const videosIds = mapYTResponseToVideosId(playlistResponse);
 
   const {response, error, isLoading} = useFetch<YTResponse>(
-    videosIds && videosIds.length ? getYTApiVideosUrl(...videosIds) : null,
+    { url:    videosIds && videosIds.length ? getYTApiVideosUrl(...videosIds) : null, }
   );
 
   return {
