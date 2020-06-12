@@ -2,6 +2,14 @@ import React, {ReactElement} from 'react';
 import useVideos from 'hooks/useVideos/useVideos';
 import Spinner from 'components/Spinner/Spinner';
 
+type YTVideo = {
+  title: string, 
+  id: string, 
+  tags: string[],
+  description: string,
+  thumbnailUrl: string,
+}
+
 type Props = {
   id: string;
 };

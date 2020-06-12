@@ -6,15 +6,7 @@ import {
   SearchVideoChannelContext,
 } from 'services/SearchChannelProvider/SearchChannelProvider';
 import VideoChannels from 'components/VideoChannels/VideoChannels';
-import {createGlobalStyle} from 'styled-components';
-
-export const GlobalStyle = createGlobalStyle` 
-  @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-  body {
-    font-size: 10px;
-  }
-`;
+import GlobalStyle from 'global-styles';
 
 const App = () => {
   const searchResultsWrapperEl = useRef(null);

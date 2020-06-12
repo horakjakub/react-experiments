@@ -1,10 +1,11 @@
 # PROJECT PLAN 
 
-1.) Single invoice view 
-2.) Multiple invoices table 
-3.) Single company view
-4.) Multiple companies view 
-5.) User data view 
+1. Clear everything
+2. Add tests for everything
+3. Add CSS grid for main view 
+4. Introduce React.StrictMode 
+5. Pure Component and use memoe 
+6. use hooks 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -14,6 +14,7 @@ export type Video = {
   title: string;
   description: string;
   thumbnailUrl: string;
+  tags: string[];
 };
 
 function mapYTResponseToPlaylistId(response: YTResponse | null): string {
@@ -37,8 +38,9 @@ function mapYTResponseToVideos(response: YTResponse | null): Video[] {
         thumbnails: {
           high: {url: thumbnailUrl},
         },
+        tags,
       },
-    }: any) => ({id, title, description, thumbnailUrl}),
+    }: any) => ({id, title, description, thumbnailUrl, tags}),
   );
 }
 
@@ -56,14 +58,14 @@ function useVideos(id: string | null): ApiResponseType<Video[]> {
     error: playlistError,
     isLoading: playlistIsLoading,
   } = useFetch<YTResponse>({
-    url: playlistId ? getYTApiPlaylistItemsUrl(playlistId, 5) : null,
+    url: playlistId ? getYTApiPlaylistItemsUrl(playlistId, 6) : null,
   });
 
   const videosIds = mapYTResponseToVideosId(playlistResponse);
 
-  const {response, error, isLoading} = useFetch<YTResponse>(
-    { url:    videosIds && videosIds.length ? getYTApiVideosUrl(...videosIds) : null, }
-  );
+  const {response, error, isLoading} = useFetch<YTResponse>({
+    url: videosIds && videosIds.length ? getYTApiVideosUrl(...videosIds) : null,
+  });
 
   return {
     response: mapYTResponseToVideos(response),
