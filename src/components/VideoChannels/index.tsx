@@ -1,50 +1,16 @@
-import React, {
-  ReactElement,
-  useState,
-  RefObject,
-  useEffect,
-  useRef,
-} from 'react';
+import React, {ReactElement, useState, RefObject, useEffect} from 'react';
 import {differenceWith, isEqual} from 'lodash';
-import styled from 'styled-components';
-import VideoChannel from 'components/VideoChannel/VideoChannel';
-import Spinner from 'components/Spinner/Spinner';
+import VideoChannel from 'components/VideoChannel';
+import Spinner from 'components/Spinner';
 import useVideoChannels, {
   mapToVideoChannels,
-  VideoChannelType,
 } from 'hooks/useVideoChannels/useVideoChannels';
+import VideoChannelType from 'common-types/video-channel.type';
 import useDebounce from 'hooks/useDebounce/useDebounce';
 import useIsElementBottomVisible from 'hooks/useIsElementBottomVisible/useIsElementBottomVisible';
+import {VideoChannelsGrid, ResultsPlaceholder} from './styled';
 
 export default VideoChannels;
-
-export const VideoChannelsBox = styled.div`
-`;
-
-export const VideoChannelsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(36em, 1fr));
-  gap: 2em;
-  margin: 1em;
-`;
-
-
-const ResultsPlaceholder = styled.div`
-  width: 36em;
-  height: 44em;
-  margin: 1.5em 1em 1em 1em;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  p {
-    font-size: 2.4em;
-    font-family: 'Lato', sans-serif;
-    color: pink;
-    padding: 1em;
-    text-align: center;
-  }
-`;
 
 export function VideoChannelsContentWrapper({
   children,
@@ -58,21 +24,19 @@ export function VideoChannelsContentWrapper({
   searchPhrase: string;
 }) {
   return (
-    <VideoChannelsBox>
-      <VideoChannelsGrid>
-        {children}
-        {isLoading && (
-          <ResultsPlaceholder>
-            <Spinner size={'6em'} color={'pink'} />
-          </ResultsPlaceholder>
-        )}
-        {isNoMoreResults && (
-          <ResultsPlaceholder>
-            <p>Oops, there is no more results for "{searchPhrase}".</p>
-          </ResultsPlaceholder>
-        )}
-      </VideoChannelsGrid>
-    </VideoChannelsBox>
+    <VideoChannelsGrid>
+      {children}
+      {isLoading && (
+        <ResultsPlaceholder>
+          <Spinner size={'6em'} color={'pink'} />
+        </ResultsPlaceholder>
+      )}
+      {isNoMoreResults && (
+        <ResultsPlaceholder>
+          <p>Oops, there is no more results for "{searchPhrase}".</p>
+        </ResultsPlaceholder>
+      )}
+    </VideoChannelsGrid>
   );
 }
 

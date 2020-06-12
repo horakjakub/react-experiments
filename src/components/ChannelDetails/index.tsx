@@ -1,8 +1,8 @@
 import React, {ReactElement, SyntheticEvent} from 'react';
 import {createPortal} from 'react-dom';
-import {Video as VideoType} from 'hooks/useVideos/useVideos';
-import Spinner from 'components/Spinner/Spinner';
-import Video from 'components/Video/Video';
+import VideoType from 'common-types/video.type';
+import Spinner from 'components/Spinner';
+import Video from 'components/Video';
 import useVideos from 'hooks/useVideos/useVideos';
 import {
   Blanket,
@@ -44,7 +44,7 @@ export function ChannelDetailsModal({
   isLoading,
   closeModal,
 }: Props): ReactElement {
-  const {response, isLoading: isFetching } = useVideos(id);
+  const {response, isLoading: isFetching} = useVideos(id);
   const videos = response ? response : [];
 
   return (

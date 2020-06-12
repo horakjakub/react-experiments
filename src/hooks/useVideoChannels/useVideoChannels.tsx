@@ -1,30 +1,7 @@
-import {useEffect, useState, Dispatch, SetStateAction} from 'react';
-import {debounce} from 'lodash';
 import useFetch, {ApiResponseType} from 'hooks/useFetch';
-import {getYTApiSearchUrl} from 'utils/getYTApiUrl';
-
-export type VideoChannelType = {
-  title: string;
-  description: string;
-  id: string;
-  thumbnailUrl: string;
-};
-
-type YTSearchResponseChannel = {
-  nextPageToken: string;
-  items: {
-    snippet: {
-      channelId: string;
-      channelTitle: string;
-      description: string;
-      thumbnails: {
-        high: {
-          url: string;
-        };
-      };
-    };
-  }[];
-};
+import {getYTApiSearchUrl} from 'utils/yt-url.helpers';
+import VideoChannelType from 'common-types/video-channel.type';
+import {YTSearchResponseChannel} from 'common-types/yt-response.type';
 
 export function mapToVideoChannels(
   response: YTSearchResponseChannel | null,
@@ -47,7 +24,7 @@ function useVideoChannels(
   const {response, error, isLoading} = useFetch<YTSearchResponseChannel>({
     url: searchPhrase
       ? getYTApiSearchUrl(searchPhrase, resultsNo || 1, pageToken || undefined)
-      : ''
+      : '',
   });
 
   return {

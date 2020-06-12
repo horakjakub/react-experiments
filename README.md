@@ -7,6 +7,11 @@
 5. Pure Component and use memoe 
 6. use hooks 
 
+Detailed changes description to have a clean code in the repository: 
+
+- move common types into "common-types" directory, 
+- add types to mocked data 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

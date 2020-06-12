@@ -1,5 +1,5 @@
 import {useEffect, useState, RefObject} from 'react';
-import isElementBottomInViewPort from 'utils/isElementBottomVisibileInViewport';
+import isElementBottomInViewPort from 'utils/element-bottom-visible.helpers';
 
 function getCheckIsBottomVisible(
   el: HTMLElement | null,

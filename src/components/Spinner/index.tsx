@@ -1,8 +1,7 @@
 import styled, {keyframes} from 'styled-components';
 
 const rotate = keyframes`
-  from {
-        transform: rotate(0deg);
+  from { transform: rotate(0deg);
       }
 
   to {
@@ -15,7 +14,7 @@ type Props = {
   color?: string;
 };
 
-const Spinner = styled.div`
+export default styled.div`
   margin: 1em;
   display: inline-block;
   width: ${(props: Props) => props.size || '2em'};
@@ -43,4 +42,3 @@ const Spinner = styled.div`
   }
 `;
 
-export default Spinner;

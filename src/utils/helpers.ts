@@ -21,6 +21,7 @@ function getThumbnail(no: number) {
 }
 
 let count = 0;
+
 export function generateMockVideoChannelData(id: string) {
   if (count === 4) {
     count = 0;

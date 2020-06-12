@@ -1,4 +1,4 @@
-export const videosData: any[] = [
+export const videosMockData: any[] = [
   {
     title: '次世代油圧ショベル Ｃａｔ  ３１３ＧＣ／３１３／３１５',
     description:
@@ -17,7 +17,8 @@ export const videosData: any[] = [
       '油圧ショベル',
       'ショベル',
     ],
-    thumbnailUrl: 'https://i.ytimg.com/vi/lLqIRK_nZSk/hqdefault.jpg', },
+    thumbnailUrl: 'https://i.ytimg.com/vi/lLqIRK_nZSk/hqdefault.jpg',
+  },
   {
     title:
       'EXCAVADORAS CAT®  336 Y 336 GC DE LA PRÓXIMA GENERACIÓN MÁS OPCIONES PARA ADAPTARSE A SU TRABAJO',

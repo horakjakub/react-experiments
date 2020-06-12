@@ -1,15 +1,11 @@
-import React, {ReactElement} from 'react';
-import {Video as VideoType} from 'hooks/useVideos/useVideos';
 import styled from 'styled-components';
 
-export default Video;
-
-const Wrapper = styled.a`
+export const Wrapper = styled.a`
   position: relative;
   cursor: pointer;
 `;
 
-const Background = styled.div`
+export const Background = styled.div`
   background-image: ${(props: {imageUrl: string}) =>
     `url(${props.imageUrl})` || ''};
   background-size: cover;
@@ -17,7 +13,7 @@ const Background = styled.div`
   height: 16em;
 `;
 
-const BackgroundOverlay = styled.div`
+export const BackgroundOverlay = styled.div`
   position: absolute;
   z-index: 2;
   background: rgba(0, 0, 0, 0.4);
@@ -48,29 +44,3 @@ const BackgroundOverlay = styled.div`
     }
   }
 `;
-
-function Video({
-  title,
-  thumbnailUrl,
-  tags,
-  id,
-}: {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  tags: string[];
-  description: string;
-}): ReactElement {
-  return (
-    <Wrapper
-      href={`https://www.youtube.com/watch?v=${id}`}
-      target="_blank"
-      rel="noopener noreferrer">
-      <BackgroundOverlay>
-        <h3>{title}</h3>
-        <p>{tags ? `#${tags.slice(0, 3).join(' #')}` : ''} </p>
-      </BackgroundOverlay>
-      <Background imageUrl={thumbnailUrl} />
-    </Wrapper>
-  );
-}

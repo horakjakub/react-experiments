@@ -1,4 +1,10 @@
-import {getYTApiUrl} from 'utils/constants';
+import {YT_API_URL, API_KEY} from 'utils/constants';
+
+function getYTApiUrl(
+  apiContent: 'search' | 'channels' | 'playlistItems' | 'videos',
+) {
+  return `${YT_API_URL}${apiContent}?key=${API_KEY}`;
+}
 
 export function getYTApiSearchUrl(
   phrase: string,

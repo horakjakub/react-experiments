@@ -1,21 +1,11 @@
 import useFetch, {ApiResponseType} from 'hooks/useFetch';
+import Video from 'common-types/video.type';
+import YTResponse from 'common-types/yt-response.type';
 import {
   getYTApiPlaylistItemsUrl,
   getYTApiChannelUrl,
   getYTApiVideosUrl,
-} from 'utils/getYTApiUrl';
-
-type YTResponse = {
-  [key: string]: any;
-};
-
-export type Video = {
-  id: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-  tags: string[];
-};
+} from 'utils/yt-url.helpers';
 
 function mapYTResponseToPlaylistId(response: YTResponse | null): string {
   return response?.items[0]?.contentDetails?.relatedPlaylists?.uploads;
