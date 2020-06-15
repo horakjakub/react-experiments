@@ -16,9 +16,9 @@ function getCheckIsBottomVisible(
 
 function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const element = elementRef.current;
 
   useEffect(() => {
-    const element = elementRef.current;
     const handleWindowChange = getCheckIsBottomVisible(element, isVis => {
       setIsVisible(isVis);
     });
@@ -28,12 +28,11 @@ function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
       window.removeEventListener('scroll', handleWindowChange);
       window.removeEventListener('resize', handleWindowChange);
     };
-  }, [elementRef]);
+  }, [element]);
 
   useEffect(() => {
-    const element = elementRef.current;
     setIsVisible(isElementBottomInViewPort(element));
-  });
+  }, [setIsVisible, element]);
 
   return {isVisible};
 }

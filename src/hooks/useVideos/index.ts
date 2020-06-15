@@ -30,7 +30,7 @@ function mapYTResponseToVideos(response: YTResponse | null): Video[] {
         },
         tags,
       },
-    }: any) => ({id, title, description, thumbnailUrl, tags}),
+    }: YTResponse) => ({id, title, description, thumbnailUrl, tags}),
   );
 }
 

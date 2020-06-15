@@ -12,7 +12,7 @@ const App = () => {
   return (
     <SearchVideoChannelContextProvider>
       <GlobalStyle />
-      <SearchBar setSearchPhrase={() => {}} />
+      <SearchBar />
       <div ref={searchResultsWrapperEl}>
         <SearchVideoChannelContext.Consumer>
           {({phrase}) => {

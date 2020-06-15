@@ -1,20 +1,26 @@
 import React, {
   ChangeEvent,
-  Dispatch,
-  SetStateAction,
   useRef,
   useEffect,
+  RefObject,
 } from 'react';
 import {MdSearch} from 'react-icons/md';
 import {Input} from '@rebass/forms';
-import {Bar} from './styled';
 import {SearchVideoChannelContext} from 'providers/search-channel.provider';
+import {Bar} from './styled';
 
-export function SearchBar({phrase, setSearchPhrase, setPhrase}: any) {
-  const searchEl: any = useRef(null);
+export default SearchBarWithConsumer;
+
+type Props = {
+  phrase: string;
+  setPhrase: (phrase: string) => void;
+};
+
+function SearchBar({phrase, setPhrase}: Props) {
+  const searchEl: RefObject<HTMLInputElement> = useRef(null);
 
   useEffect(() => {
-    if (searchEl) {
+    if (searchEl && searchEl.current) {
       searchEl.current.focus();
     }
   }, [searchEl]);
@@ -28,39 +34,27 @@ export function SearchBar({phrase, setSearchPhrase, setPhrase}: any) {
         type="text"
         placeholder="start typing to search"
         value={phrase}
-        onChange={e => {
-          setSearchPhrase(e.target.value);
-          setPhrase(e.target.value);
-        }}
+        onChange={withOnChange(setPhrase)}
         ref={searchEl}
       />
     </Bar>
   );
 }
-const withOnChange: (
-  func: (state: string) => void,
-) => (e: ChangeEvent<HTMLInputElement>) => void = func => e => {
-  func(e.target.value);
-};
 
-const SearchBarWithConsumer = ({
-  setSearchPhrase,
-}: {
-  setSearchPhrase: Dispatch<SetStateAction<string>>;
-}) => {
+function withOnChange(
+  func: (state: string) => void,
+): (e: ChangeEvent<HTMLInputElement>) => void {
+  return e => {
+    func(e.target.value);
+  };
+}
+
+function SearchBarWithConsumer() {
   return (
     <SearchVideoChannelContext.Consumer>
       {({phrase, setPhrase}) => {
-        return (
-          <SearchBar
-            phrase={phrase}
-            setPhrase={setPhrase}
-            setSearchPhrase={setSearchPhrase}
-          />
-        );
+        return <SearchBar phrase={phrase} setPhrase={setPhrase} />;
       }}
     </SearchVideoChannelContext.Consumer>
   );
-};
-
-export default SearchBarWithConsumer;
+}

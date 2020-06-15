@@ -2,17 +2,15 @@ import React, {ReactElement, useState, RefObject, useEffect} from 'react';
 import {differenceWith, isEqual} from 'lodash';
 import VideoChannel from 'components/VideoChannel';
 import Spinner from 'components/Spinner';
-import useVideoChannels, {
-  mapToVideoChannels,
-} from 'hooks/useVideoChannels/useVideoChannels';
-import VideoChannelType from 'common-types/video-channel.type';
-import useDebounce from 'hooks/useDebounce/useDebounce';
-import useIsElementBottomVisible from 'hooks/useIsElementBottomVisible/useIsElementBottomVisible';
+import useVideoChannels, {mapToVideoChannels} from 'hooks/useVideoChannels';
+import {VideoChannelType} from 'common-types/video-channel.type';
+import useDebounce from 'hooks/useDebounce';
+import useIsElementBottomVisible from 'hooks/useIsElementBottomVisible';
 import {VideoChannelsGrid, ResultsPlaceholder} from './styled';
 
 export default VideoChannels;
 
-export function VideoChannelsContentWrapper({
+export function VideoChannelsWrapper({
   children,
   isLoading,
   isNoMoreResults,
@@ -28,7 +26,7 @@ export function VideoChannelsContentWrapper({
       {children}
       {isLoading && (
         <ResultsPlaceholder>
-          <Spinner size={'6em'} color={'pink'} />
+          <Spinner size="6em" color="pink" />
         </ResultsPlaceholder>
       )}
       {isNoMoreResults && (
@@ -45,18 +43,14 @@ type Props = {
   wrapperRef: RefObject<HTMLElement>;
 };
 
-type CurrentSearch = {
-  phrase: string | null;
-  results: VideoChannelType[];
-  nextPageId: string | null;
-};
-
 function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
   const [shouldSearch, setShouldSearch] = useState<boolean>(true);
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [videoChannels, setVideoChannels] = useState<VideoChannelType[]>([]);
   const [nextPageId, setNextPageId] = useState<string | null>(null);
-  const {isVisible} = useIsElementBottomVisible(wrapperRef);
+  const {isVisible: isWrapperBottomVisible} = useIsElementBottomVisible(
+    wrapperRef,
+  );
   const {debouncedPhrase} = useDebounce(searchPhrase);
   const {response, isLoading} = useVideoChannels(
     shouldSearch ? debouncedPhrase : null,
@@ -78,7 +72,7 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
       }
 
       if (nextPageToken !== nextPageId) {
-        setNextPageId(nextPageToken ? nextPageToken : 'none');
+        setNextPageId(nextPageToken || 'none');
       }
 
       if (lastSearchPhrase !== debouncedPhrase) {
@@ -86,19 +80,21 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
         setVideoChannels([]);
       }
 
-      setShouldSearch(isVisible || lastSearchPhrase !== debouncedPhrase);
+      setShouldSearch(
+        isWrapperBottomVisible || lastSearchPhrase !== debouncedPhrase,
+      );
     }
   }, [
     response,
     videoChannels,
     nextPageId,
-    isVisible,
+    isWrapperBottomVisible,
     debouncedPhrase,
     lastSearchPhrase,
   ]);
 
   return (
-    <VideoChannelsContentWrapper
+    <VideoChannelsWrapper
       isLoading={isLoading}
       searchPhrase={searchPhrase}
       isNoMoreResults={nextPageId === 'none'}>
@@ -107,6 +103,6 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
           <VideoChannel {...videoChannelProps} key={videoChannelProps.id} />
         ))}
       </>
-    </VideoChannelsContentWrapper>
+    </VideoChannelsWrapper>
   );
 }

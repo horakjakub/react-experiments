@@ -4,5 +4,3 @@ export type VideoChannelType = {
   id: string;
   thumbnailUrl: string;
 };
-
-export default VideoChannelType;

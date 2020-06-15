@@ -1,7 +1,6 @@
 import React, {ReactElement, useState} from 'react';
-import styled from 'styled-components';
-import VideoChannelType from 'common-types/video-channel.type';
-import ChannelDetailsModal from 'components/ChannelDetails';
+import {VideoChannelType} from 'common-types/video-channel.type';
+import DetailsModal from 'components/ChannelDetails';
 import {
   VideoChannelWrapper,
   VideoChannelBox,
@@ -9,13 +8,16 @@ import {
   Img,
   Description,
 } from './styled';
+
+export default VideoChannel;
+
 function VideoChannel({
   title,
   description,
   thumbnailUrl,
   id,
 }: VideoChannelType): ReactElement {
-  const [showVideos, setShowVideos] = useState(false);
+  const [showVideos, setShowVideos] = useState<boolean>(false);
 
   return (
     <>
@@ -31,7 +33,7 @@ function VideoChannel({
         </VideoChannelBox>
       </VideoChannelWrapper>
       {showVideos && (
-        <ChannelDetailsModal
+        <DetailsModal
           closeModal={() => {
             setShowVideos(false);
           }}
@@ -39,11 +41,8 @@ function VideoChannel({
           title={title}
           description={description}
           thumbnailUrl={thumbnailUrl}
-          isLoading
         />
       )}
     </>
   );
 }
-
-export default VideoChannel;

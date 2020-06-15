@@ -1,6 +1,6 @@
 import useFetch, {ApiResponseType} from 'hooks/useFetch';
 import {getYTApiSearchUrl} from 'utils/yt-url.helpers';
-import VideoChannelType from 'common-types/video-channel.type';
+import {VideoChannelType} from 'common-types/video-channel.type';
 import {YTSearchResponseChannel} from 'common-types/yt-response.type';
 
 export function mapToVideoChannels(

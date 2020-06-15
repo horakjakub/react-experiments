@@ -2,8 +2,10 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 export const Bar: FC = styled.div`
+  position: fixed;
   width: 100%;
-  height: 20%;
+  top: 0;
+  height: 4em;
   background: white;
   display: flex;
   justify-content: center;

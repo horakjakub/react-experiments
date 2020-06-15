@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import VideoType from 'common-types/video.type';
 import Spinner from 'components/Spinner';
 import Video from 'components/Video';
-import useVideos from 'hooks/useVideos/useVideos';
+import useVideos from 'hooks/useVideos';
 import {
   Blanket,
   CloseButton,
@@ -25,15 +25,12 @@ type Props = {
   title: string;
   thumbnailUrl: string;
   description: string;
-  videos?: VideoType[];
-  isLoading?: boolean;
   closeModal: () => void;
 };
 
 function witchOnDirectClick(func: () => void) {
-  return function (e: SyntheticEvent) {
-    return e.target === e.currentTarget ? func() : undefined;
-  };
+  return (e: SyntheticEvent) =>
+    e.target === e.currentTarget ? func() : undefined;
 }
 
 export function ChannelDetailsModal({
@@ -41,11 +38,10 @@ export function ChannelDetailsModal({
   title,
   thumbnailUrl,
   description,
-  isLoading,
   closeModal,
 }: Props): ReactElement {
-  const {response, isLoading: isFetching} = useVideos(id);
-  const videos = response ? response : [];
+  const {response, isLoading} = useVideos(id);
+  const videos = response || [];
 
   return (
     <Blanket onClick={witchOnDirectClick(closeModal)}>
@@ -60,9 +56,9 @@ export function ChannelDetailsModal({
           <Description>{description}</Description>
         </Content>
         <VideosBox>
-          {isFetching && (
+          {isLoading && (
             <VideosPlaceholder>
-              <Spinner size={'6em'} color={'pink'} />
+              <Spinner size="6em" color="pink" />
             </VideosPlaceholder>
           )}
           {videos &&
