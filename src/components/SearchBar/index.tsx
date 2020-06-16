@@ -16,7 +16,7 @@ type Props = {
   setPhrase: (phrase: string) => void;
 };
 
-function SearchBar({phrase, setPhrase}: Props) {
+export function SearchBar({phrase, setPhrase}: Props) {
   const searchEl: RefObject<HTMLInputElement> = useRef(null);
 
   useEffect(() => {

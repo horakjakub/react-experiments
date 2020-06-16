@@ -1,5 +1,5 @@
 import useFetch, {ApiResponseType} from 'hooks/useFetch';
-import Video from 'common-types/video.type';
+import {VideoType} from 'common-types/video.type';
 import YTResponse from 'common-types/yt-response.type';
 import {
   getYTApiPlaylistItemsUrl,
@@ -18,7 +18,7 @@ function mapYTResponseToVideosId(response: YTResponse | null): string[] {
   );
 }
 
-function mapYTResponseToVideos(response: YTResponse | null): Video[] {
+function mapYTResponseToVideos(response: YTResponse | null): VideoType[] {
   return response?.items?.map(
     ({
       id,
@@ -30,11 +30,17 @@ function mapYTResponseToVideos(response: YTResponse | null): Video[] {
         },
         tags,
       },
-    }: YTResponse) => ({id, title, description, thumbnailUrl, tags}),
+    }: YTResponse) => ({
+      id,
+      title,
+      description,
+      thumbnailUrl,
+      tags,
+    }),
   );
 }
 
-function useVideos(id: string | null): ApiResponseType<Video[]> {
+function useVideos(id: string | null): ApiResponseType<VideoType[]> {
   const {
     response: channelResponse,
     error: channelError,

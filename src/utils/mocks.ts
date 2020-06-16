@@ -1,7 +1,12 @@
 import {videosMockData} from 'utils/videos.mock-data';
-import Video from 'common-types/video.type';
+import { VideoType } from 'common-types/video.type';
+import { VideoChannelType } from 'common-types/video-channel.type';
+import videoChannelsData from 'utils/video-channels.mock-data';
 
-export const VideosMock = videosMockData.map((v, idx: number) => ({
+export const videoChannelsMock: VideoChannelType[] = videoChannelsData;
+
+export const videosMock: VideoType[] = videosMockData.map((v, idx: number) => ({
   ...v,
   id: `${idx}`,
-})) as Video[];
+
+})) as VideoType[];

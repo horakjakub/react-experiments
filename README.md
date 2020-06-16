@@ -1,8 +1,7 @@
 # PROJECT PLAN 
 
-1. Clear everything
 2. Add tests for everything
-3. Add CSS grid for main view 
+3. Check possibilies of testing with Storybook 
 4. Introduce React.StrictMode 
 5. Pure Component and use memoe 
 6. use hooks 

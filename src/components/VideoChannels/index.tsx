@@ -1,6 +1,6 @@
 import React, {ReactElement, useState, RefObject, useEffect} from 'react';
 import {differenceWith, isEqual} from 'lodash';
-import VideoChannel from 'components/VideoChannel';
+import VideoChannelWithModal from 'components/VideoChannel';
 import Spinner from 'components/Spinner';
 import useVideoChannels, {mapToVideoChannels} from 'hooks/useVideoChannels';
 import {VideoChannelType} from 'common-types/video-channel.type';
@@ -100,7 +100,7 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
       isNoMoreResults={nextPageId === 'none'}>
       <>
         {videoChannels.map(videoChannelProps => (
-          <VideoChannel {...videoChannelProps} key={videoChannelProps.id} />
+          <VideoChannelWithModal {...videoChannelProps} key={videoChannelProps.id} />
         ))}
       </>
     </VideoChannelsWrapper>

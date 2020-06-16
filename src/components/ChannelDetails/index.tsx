@@ -1,6 +1,6 @@
 import React, {ReactElement, SyntheticEvent} from 'react';
 import {createPortal} from 'react-dom';
-import VideoType from 'common-types/video.type';
+import {VideoType} from 'common-types/video.type';
 import Spinner from 'components/Spinner';
 import Video from 'components/Video';
 import useVideos from 'hooks/useVideos';
@@ -28,21 +28,35 @@ type Props = {
   closeModal: () => void;
 };
 
-function witchOnDirectClick(func: () => void) {
-  return (e: SyntheticEvent) =>
-    e.target === e.currentTarget ? func() : undefined;
+function ChannelDetailsModalWithPortal(props: Props): ReactElement {
+  return createPortal(
+    <ChannelDetailsModalWithVideos {...props} />,
+    document.body,
+  );
 }
 
+function ChannelDetailsModalWithVideos(props: Props): ReactElement {
+  const {response, isLoading} = useVideos(props.id);
+  const videos = response || [];
+
+  return (
+    <ChannelDetailsModal {...props} videos={videos} isLoading={isLoading} />
+  );
+}
+
+type ChannelDetailModalProps = Props & {
+  videos: VideoType[];
+  isLoading: boolean;
+};
+
 export function ChannelDetailsModal({
-  id,
   title,
   thumbnailUrl,
   description,
   closeModal,
-}: Props): ReactElement {
-  const {response, isLoading} = useVideos(id);
-  const videos = response || [];
-
+  videos,
+  isLoading,
+}: ChannelDetailModalProps): ReactElement {
   return (
     <Blanket onClick={witchOnDirectClick(closeModal)}>
       <CloseButton onClick={witchOnDirectClick(closeModal)}>X</CloseButton>
@@ -71,6 +85,7 @@ export function ChannelDetailsModal({
   );
 }
 
-function ChannelDetailsModalWithPortal(props: Props): ReactElement {
-  return createPortal(<ChannelDetailsModal {...props} />, document.body);
+function witchOnDirectClick(func: () => void) {
+  return (e: SyntheticEvent) =>
+    e.target === e.currentTarget ? func() : undefined;
 }

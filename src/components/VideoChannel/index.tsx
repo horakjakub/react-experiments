@@ -9,40 +9,47 @@ import {
   Description,
 } from './styled';
 
-export default VideoChannel;
+export default VideoChannelWithModal;
 
-function VideoChannel({
-  title,
-  description,
-  thumbnailUrl,
-  id,
-}: VideoChannelType): ReactElement {
+function VideoChannelWithModal(props: VideoChannelType): ReactElement {
   const [showVideos, setShowVideos] = useState<boolean>(false);
 
   return (
     <>
-      <VideoChannelWrapper onClick={() => setShowVideos(!showVideos)}>
-        <VideoChannelBox>
-          <Figure>
-            <Img src={thumbnailUrl} />
-          </Figure>
-          <Description>
-            <h3> {title} </h3>
-            <p> {description} </p>
-          </Description>
-        </VideoChannelBox>
-      </VideoChannelWrapper>
+      <VideoChannel onClick={() => setShowVideos(!showVideos)} {...props} />
       {showVideos && (
         <DetailsModal
           closeModal={() => {
             setShowVideos(false);
           }}
-          id={id}
-          title={title}
-          description={description}
-          thumbnailUrl={thumbnailUrl}
+          {...props}
         />
       )}
     </>
+  );
+}
+
+type Props = VideoChannelType & {
+  onClick: () => void;
+};
+
+export function VideoChannel({
+  onClick,
+  title,
+  description,
+  thumbnailUrl,
+}: Props): ReactElement {
+  return (
+    <VideoChannelWrapper onClick={onClick}>
+      <VideoChannelBox>
+        <Figure>
+          <Img src={thumbnailUrl} />
+        </Figure>
+        <Description>
+          <h3> {title} </h3>
+          <p> {description} </p>
+        </Description>
+      </VideoChannelBox>
+    </VideoChannelWrapper>
   );
 }
