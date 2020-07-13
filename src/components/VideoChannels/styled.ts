@@ -6,7 +6,7 @@ export const VideoChannelsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(36em, 1fr));
   gap: 2em;
-  margin: 1em;
+  margin: 4em 1em 1em;
 `;
 
 export const ResultsPlaceholder = styled.div`

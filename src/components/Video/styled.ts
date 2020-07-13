@@ -3,14 +3,21 @@ import styled from 'styled-components';
 export const Wrapper = styled.a`
   position: relative;
   cursor: pointer;
+  display: flex;
+  max-width: 16em;
+  max-height: 16em;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Background = styled.div`
   background-image: ${(props: {imageUrl: string}) =>
     `url(${props.imageUrl})` || ''};
   background-size: cover;
-  width: 16em;
-  height: 16em;
+  max-width: 16em;
+  max-height: 16em;
+  height: 100%;
+  width: 100%;
 `;
 
 export const BackgroundOverlay = styled.div`
@@ -42,5 +49,9 @@ export const BackgroundOverlay = styled.div`
       opacity: 1;
       display: block;
     }
+    > p {
+      display: none;
+    }
   }
 `;
+

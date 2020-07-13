@@ -36,7 +36,6 @@ const GlobalStyle = createGlobalStyle`
       min-height: 100vh;
       scroll-behavior: smooth;
       text-rendering: optimizeSpeed;
-      line-height: 1.5;
   }
 
   /* Remove list styles on ul, ol elements with a class attribute */
@@ -82,6 +81,8 @@ article > * + * {
   body {
     font-size: 10px;
     background: #f4f4f3;
+    width: 100%;
+    height: 100%;
   }
 `;
 

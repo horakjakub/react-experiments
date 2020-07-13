@@ -8,5 +8,4 @@ export const videoChannelsMock: VideoChannelType[] = videoChannelsData;
 export const videosMock: VideoType[] = videosMockData.map((v, idx: number) => ({
   ...v,
   id: `${idx}`,
-
 })) as VideoType[];

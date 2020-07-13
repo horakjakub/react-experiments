@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const Bar: FC = styled.div`
   position: fixed;
+  z-index: 4;
   width: 100%;
   top: 0;
   height: 4em;
@@ -12,8 +13,7 @@ export const Bar: FC = styled.div`
   align-items: center;
   border-bottom: 1px solid #eee;
   input {
-    font-size: 1.6em;
-    font-family: 'Lato', sans-serif;
+    font-size: 1.6em; font-family: 'Lato', sans-serif;
     ::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
       color: pink;

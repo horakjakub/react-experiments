@@ -12,7 +12,10 @@ export const ChannelDetailsModalDefault = () => (
   <ChannelDetailsModal {...videoChannelsMock[0]} videos={videosMock} />
 );
 
+export const ChannelDetailsLowerVideosCount = () => (
+  <ChannelDetailsModal videos={videosMock.slice(0,3)} {...videoChannelsMock[0]} />
+);
+
 export const ChannelDetailsModalLoading = () => (
   <ChannelDetailsModal {...videoChannelsMock[0]} isLoading />
 );
-

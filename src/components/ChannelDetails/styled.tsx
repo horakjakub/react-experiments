@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {device} from 'global-styles/breakpoints-devices';
 
 export const Blanket = styled.div`
   position: fixed;
@@ -12,9 +13,9 @@ export const Blanket = styled.div`
   top: 0;
 `;
 
-export const CloseButton = styled.button` 
-  background: transparent; 
-  font-family: Lato; 
+export const CloseButton = styled.button`
+  background: transparent;
+  font-family: Lato;
   font-size: 2em;
   position: absolute;
   top: 1em;
@@ -32,9 +33,17 @@ export const Modal = styled.div`
   box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-columns: 1fr 1fr;
+  height: 64em;
   grid-template-areas:
-    'description photo'
-    'description photo';
+    'description description'
+    'photo photo';
+  @media ${device.tablet} {
+    grid-template-rows: 1fr 1fr;
+    height: 48em;
+    grid-template-areas:
+      'description photo'
+      'description photo';
+  }
 `;
 
 export const Img = styled.img`
@@ -46,8 +55,10 @@ export const Img = styled.img`
 export const VideosBox = styled.div`
   grid-area: photo;
   display: flex;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-x: auto;
+  background: #eee;
 `;
 
 export const Header = styled.header`
@@ -71,6 +82,7 @@ export const Description = styled.p`
 
 export const Content = styled.section`
   grid-area: description;
+  overflow-y: auto;
 `;
 
 export const Hr = styled.hr`
@@ -81,7 +93,6 @@ export const Hr = styled.hr`
 
 export const VideosPlaceholder = styled.div`
   grid-area: photo;
-  background: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
