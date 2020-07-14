@@ -1,4 +1,5 @@
 import React from 'react';
+import {action} from '@storybook/addon-actions';
 import GlobalStyle from 'global-styles/storybook-decorator';
 import {VideoChannel} from 'components/VideoChannel';
 import {videoChannelsMock} from 'utils/mocks';
@@ -12,7 +13,11 @@ export default {
 export const VideoChannelsDefault = () => (
   <VideoChannelsWrapper>
     {videoChannelsMock.map(video => (
-      <VideoChannel {...video} key={video.id} />
+      <VideoChannel
+        onClick={action(`${video.title} clicked`)}
+        {...video}
+        key={video.id}
+      />
     ))}
   </VideoChannelsWrapper>
 );

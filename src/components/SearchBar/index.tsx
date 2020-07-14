@@ -1,4 +1,5 @@
 import React, {
+  ReactElement,
   ChangeEvent,
   useRef,
   useEffect,
@@ -16,7 +17,7 @@ type Props = {
   setPhrase: (phrase: string) => void;
 };
 
-export function SearchBar({phrase, setPhrase}: Props) {
+export function Search({phrase, setPhrase}: Props): ReactElement {
   const searchEl: RefObject<HTMLInputElement> = useRef(null);
 
   useEffect(() => {
@@ -49,11 +50,11 @@ function withOnChange(
   };
 }
 
-function SearchBarWithConsumer() {
+function SearchBarWithConsumer(): ReactElement {
   return (
     <SearchVideoChannelContext.Consumer>
       {({phrase, setPhrase}) => {
-        return <SearchBar phrase={phrase} setPhrase={setPhrase} />;
+        return <Search phrase={phrase} setPhrase={setPhrase} />;
       }}
     </SearchVideoChannelContext.Consumer>
   );

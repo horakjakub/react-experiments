@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {action} from '@storybook/addon-actions';
 import GlobalStyle from 'global-styles/storybook-decorator';
-import {SearchBar} from './index';
+import {Search} from './index';
 
 export default {
   title: 'Search Bar',
@@ -12,7 +12,7 @@ export const SearchBarDefault = () => {
   const [phrase, setPhrase] = useState('');
 
   return (
-    <SearchBar
+    <Search
       setPhrase={text => {
         action('typed')(text);
         setPhrase(text);

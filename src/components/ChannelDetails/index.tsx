@@ -36,9 +36,9 @@ function ChannelDetailsModalWithPortal(props: Props): ReactElement {
 }
 
 function ChannelDetailsModalWithVideos(props: Props): ReactElement {
-  const {response, isLoading} = useVideos(props.id);
+  const {id} = props;
+  const {response, isLoading} = useVideos(id);
   const videos = response || [];
-
   return (
     <ChannelDetailsModal {...props} videos={videos} isLoading={isLoading} />
   );
@@ -85,7 +85,7 @@ export function ChannelDetailsModal({
   );
 }
 
-function witchOnDirectClick(func: () => void) {
+function witchOnDirectClick(func: () => void): (e: SyntheticEvent) => void {
   return (e: SyntheticEvent) =>
     e.target === e.currentTarget ? func() : undefined;
 }

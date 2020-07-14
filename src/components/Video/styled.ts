@@ -6,8 +6,8 @@ export const Wrapper = styled.a`
   display: inline-flex;
   max-width: 16em;
   max-height: 16em;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
 `;
 
 export const Background = styled.div`

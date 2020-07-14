@@ -31,7 +31,7 @@ export function VideoChannelsWrapper({
       )}
       {isNoMoreResults && (
         <ResultsPlaceholder>
-          <p>Oops, there is no more results for "{searchPhrase}".</p>
+          <p>Oops, there is no results for "{searchPhrase}".</p>
         </ResultsPlaceholder>
       )}
     </VideoChannelsGrid>

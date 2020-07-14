@@ -3,7 +3,7 @@ import GlobalStyle from 'global-styles';
 
 export default story => (
   <>
-    <GlobalStyle /> 
-    { story() }
+    <GlobalStyle />
+    {story()}
   </>
 );

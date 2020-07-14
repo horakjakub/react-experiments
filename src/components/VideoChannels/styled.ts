@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const VideoChannelsBox = styled.div``;
-
 export const VideoChannelsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(36em, 1fr));

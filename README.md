@@ -1,10 +1,16 @@
 # PROJECT PLAN 
 
 2. Add tests for everything
-3. Check possibilies of testing with Storybook 
+3. Check possibilities of testing with Storybook 
 4. Introduce React.StrictMode 
-5. Pure Component and use memoe 
+5. Pure Component and use memo 
 6. use hooks 
+7. Better prettier settings
+8. Test on mobile devices 
+9. Placeholder for situation when image cannot be fetched 
+10. Error handling (maybe in modal)
+11. Check nullable is justified in hooks
+12. Improve logic behind "no results" in Video Channels
 
 Detailed changes description to have a clean code in the repository: 
 

@@ -15,16 +15,10 @@ export const VideoChannelBox = styled.div`
   background: white;
   flex-direction: column;
   position: relative;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   top: 0.5em;
   :hover {
     top: 0;
-    -webkit-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
     box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   }
 `;

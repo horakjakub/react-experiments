@@ -1,7 +1,7 @@
 import React from 'react';
 import GlobalStyle from 'global-styles/storybook-decorator';
-import {ChannelDetailsModal} from './index';
 import {videoChannelsMock, videosMock} from 'utils/mocks';
+import {ChannelDetailsModal} from './index';
 
 export default {
   title: 'Channel Details Modal',
@@ -13,7 +13,10 @@ export const ChannelDetailsModalDefault = () => (
 );
 
 export const ChannelDetailsLowerVideosCount = () => (
-  <ChannelDetailsModal videos={videosMock.slice(0,3)} {...videoChannelsMock[0]} />
+  <ChannelDetailsModal
+    videos={videosMock.slice(0, 3)}
+    {...videoChannelsMock[0]}
+  />
 );
 
 export const ChannelDetailsModalLoading = () => (

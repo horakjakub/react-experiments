@@ -28,13 +28,10 @@ export const CloseButton = styled.button`
 export const Modal = styled.div`
   width: 100vw;
   background: white;
-  -webkit-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   display: grid;
   height: 48em;
   max-width: 64em;
-  grid-template-rows: none;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     'description photo'
@@ -111,4 +108,5 @@ export const VideosPlaceholder = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%; `;
+  height: 100%;
+`;

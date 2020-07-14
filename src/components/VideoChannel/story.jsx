@@ -1,6 +1,6 @@
 import React from 'react';
-import GlobalStyle from 'global-styles/storybook-decorator';
 import {action} from '@storybook/addon-actions';
+import GlobalStyle from 'global-styles/storybook-decorator';
 import {videoChannelsMock} from 'utils/mocks';
 import {VideoChannel} from './index';
 
