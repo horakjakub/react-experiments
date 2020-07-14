@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.a`
   position: relative;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   max-width: 16em;
   max-height: 16em;
   width: 100%;
@@ -16,8 +16,8 @@ export const Background = styled.div`
   background-size: cover;
   max-width: 16em;
   max-height: 16em;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 `;
 
 export const BackgroundOverlay = styled.div`

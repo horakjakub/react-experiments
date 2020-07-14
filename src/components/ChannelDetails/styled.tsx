@@ -26,23 +26,26 @@ export const CloseButton = styled.button`
 `;
 
 export const Modal = styled.div`
-  width: 64em;
+  width: 100vw;
   background: white;
   -webkit-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   -moz-box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   display: grid;
+  height: 48em;
+  max-width: 64em;
+  grid-template-rows: none;
   grid-template-columns: 1fr 1fr;
-  height: 64em;
   grid-template-areas:
-    'description description'
-    'photo photo';
+    'description photo'
+    'description photo';
   @media ${device.tablet} {
-    grid-template-rows: 1fr 1fr;
-    height: 48em;
+    grid-template-rows: auto 16em;
+    height: initial;
+    max-width: 48em;
     grid-template-areas:
-      'description photo'
-      'description photo';
+      'description description'
+      'photo photo';
   }
 `;
 
@@ -57,8 +60,18 @@ export const VideosBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  overflow-x: auto;
   background: #eee;
+  @media ${device.tablet} {
+    width: 100vw;
+    max-width: 48em;
+    width: 100vw;
+    > a:nth-child(3),
+    > a:nth-child(4),
+    > a:nth-child(5) {
+      display: none;
+    }
+    flex-wrap: nowrap;
+  }
 `;
 
 export const Header = styled.header`
@@ -83,6 +96,7 @@ export const Description = styled.p`
 export const Content = styled.section`
   grid-area: description;
   overflow-y: auto;
+  padding: 0 0 1em;
 `;
 
 export const Hr = styled.hr`
@@ -96,6 +110,5 @@ export const VideosPlaceholder = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 32em;
-  height: 48em;
-`;
+  width: 100%;
+  height: 100%; `;
