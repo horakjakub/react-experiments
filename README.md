@@ -12,6 +12,11 @@
 11. Check nullable is justified in hooks
 12. Improve logic behind "no results" in Video Channels
 
+TEST 
+
+1. Check tests naming convention 
+
+
 Detailed changes description to have a clean code in the repository: 
 
 - move common types into "common-types" directory, 

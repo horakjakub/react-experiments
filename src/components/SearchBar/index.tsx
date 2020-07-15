@@ -1,7 +1,4 @@
-import React, {
-  ReactElement,
-  ChangeEvent,
-} from 'react';
+import React, {ReactElement, ChangeEvent} from 'react';
 import {MdSearch} from 'react-icons/md';
 import {Input} from '@rebass/forms';
 import {SearchVideoChannelContext} from 'providers/search-channel.provider';
@@ -31,7 +28,7 @@ export function Search({phrase, setPhrase}: Props): ReactElement {
   );
 }
 
-function withOnChange(
+export function withOnChange(
   func: (state: string) => void,
 ): (e: ChangeEvent<HTMLInputElement>) => void {
   return e => {
