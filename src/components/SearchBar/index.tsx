@@ -1,9 +1,6 @@
 import React, {
   ReactElement,
   ChangeEvent,
-  useRef,
-  useEffect,
-  RefObject,
 } from 'react';
 import {MdSearch} from 'react-icons/md';
 import {Input} from '@rebass/forms';
@@ -18,14 +15,6 @@ type Props = {
 };
 
 export function Search({phrase, setPhrase}: Props): ReactElement {
-  const searchEl: RefObject<HTMLInputElement> = useRef(null);
-
-  useEffect(() => {
-    if (searchEl && searchEl.current) {
-      searchEl.current.focus();
-    }
-  }, [searchEl]);
-
   return (
     <Bar>
       <MdSearch style={{fontSize: '2em', margin: '0 .6em', color: '#999999'}} />
@@ -36,7 +25,7 @@ export function Search({phrase, setPhrase}: Props): ReactElement {
         placeholder="start typing to search"
         value={phrase}
         onChange={withOnChange(setPhrase)}
-        ref={searchEl}
+        autoFocus
       />
     </Bar>
   );
