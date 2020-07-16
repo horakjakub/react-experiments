@@ -1,26 +1,23 @@
-# PROJECT PLAN 
+# TODO 
 
-2. Add tests for everything
-3. Check possibilities of testing with Storybook 
-4. Introduce React.StrictMode 
-5. Pure Component and use memo 
-6. use hooks 
-7. Better prettier settings
-8. Test on mobile devices 
-9. Placeholder for situation when image cannot be fetched 
-10. Error handling (maybe in modal)
-11. Check nullable is justified in hooks
-12. Improve logic behind "no results" in Video Channels
+. Add tests for everything
+. Check possibilities of testing with Storybook 
+. Introduce React.StrictMode 
+. Pure Component and use memo 
+. use hooks 
+. Better prettier settings
+. Test on mobile devices 
+. Placeholder for situation when image cannot be fetched 
+. Error handling (maybe in modal)
+. Check nullable is justified in hooks
+. Improve logic behind "no results" in Video Channels
+. Replace img in VideoChannel component with picture with different sources if possible
 
 TEST 
 
-1. Check tests naming convention 
-
+- Check if cleaning container before each is necessary (maybe with `screen.debug`)
 
 Detailed changes description to have a clean code in the repository: 
-
-- move common types into "common-types" directory, 
-- add types to mocked data 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -3,10 +3,15 @@ import {render, fireEvent, screen, createEvent} from '@testing-library/react';
 import {Search, withOnChange} from '../index';
 
 describe('<Search />', () => {
+  it('renders correctly', () => {
+    const {container} = render(<Search phrase="" setPhrase={() => {}} />);
+    expect(container).toMatchSnapshot();
+  });
+
   it('should pass typed phrase into "setPhrase" prop function', () => {
     const spy = jest.fn();
-    render(<Search phrase="" setPhrase={spy} />);
-    const searchEl = screen.getByPlaceholderText('start typing to search');
+    const {getByPlaceholderText} = render(<Search phrase="" setPhrase={spy} />);
+    const searchEl = getByPlaceholderText('start typing to search');
     const changeEvent = createEvent.change(searchEl, {target: {value: 'cat'}});
 
     fireEvent.change(searchEl, changeEvent);
@@ -15,14 +20,16 @@ describe('<Search />', () => {
   });
 
   it('should pass "phrase" prop into search input value', () => {
-    render(<Search phrase="tiger" setPhrase={() => {}} />);
-    const searchEl = screen.getByPlaceholderText('start typing to search');
+    const {getByPlaceholderText} = render(
+      <Search phrase="tiger" setPhrase={() => {}} />,
+    );
+    const searchInput = getByPlaceholderText('start typing to search');
 
-    expect(searchEl.value).toEqual('tiger');
+    expect(searchInput.value).toEqual('tiger');
   });
 });
 
-describe('withOnChange', () => {
+describe('withOnChange()', () => {
   it('should return function', () => {
     expect(typeof withOnChange(() => {})).toBe('function');
   });
@@ -35,7 +42,7 @@ describe('withOnChange', () => {
     expect(firstFunc === secondFunc).toBeFalsy();
   });
 
-  it('should return function, which called with change event will use "target.value" property', () => {
+  it('should return function which called with ChangeEvent as an argument, will use "target.value" property', () => {
     const spy = jest.fn();
     const funcToTest = withOnChange(spy);
     const changeEventMock = {

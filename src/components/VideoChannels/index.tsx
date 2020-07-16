@@ -22,7 +22,7 @@ export function VideoChannelsWrapper({
   searchPhrase: string;
 }) {
   return (
-    <VideoChannelsGrid>
+    <VideoChannelsGrid data-testid="video-channels-wrapper">
       {children}
       {isLoading && (
         <ResultsPlaceholder>
@@ -100,7 +100,10 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
       isNoMoreResults={nextPageId === 'none'}>
       <>
         {videoChannels.map(videoChannelProps => (
-          <VideoChannelWithModal {...videoChannelProps} key={videoChannelProps.id} />
+          <VideoChannelWithModal
+            {...videoChannelProps}
+            key={videoChannelProps.id}
+          />
         ))}
       </>
     </VideoChannelsWrapper>
