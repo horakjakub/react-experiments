@@ -51,16 +51,18 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
   const {isVisible: isWrapperBottomVisible} = useIsElementBottomVisible(
     wrapperRef,
   );
+
   const {debouncedPhrase} = useDebounce(searchPhrase);
   const {response, isLoading} = useVideoChannels(
     shouldSearch ? debouncedPhrase : null,
     20,
     nextPageId,
   );
-
+  
   useEffect(() => {
     if (response) {
       const {nextPageToken} = response;
+
       const newChannels = differenceWith(
         mapToVideoChannels(response),
         videoChannels,

@@ -1,24 +1,24 @@
 import React, {ChangeEvent} from 'react';
 import {render, fireEvent, screen, createEvent} from '@testing-library/react';
-import App from '../index';
+import AppContainer from '../index';
 
 const videoChannelsWrapperTestId = 'video-channels-wrapper'; 
 
-describe('<App />', () => {
+describe('<AppContainer />', () => {
   it('renders correctly', () => {
-    const {container} = render(<App />);
+    const {container} = render(<AppContainer />);
     expect(container).toMatchSnapshot();
   });
 
   it('shouldn`t show video channels wrapper by default', () => {
-    const { queryByTestId } = render(<App />);
+    const { queryByTestId } = render(<AppContainer />);
     const videoChannelWrapperEl = queryByTestId(videoChannelsWrapperTestId);
 
     expect(videoChannelWrapperEl).toBeNull();
   });
 
   it('shouldn`t show video channels if search phrase is shorter than three', () => {
-    const { queryByTestId, getByPlaceholderText } = render(<App />);
+    const { queryByTestId, getByPlaceholderText } = render(<AppContainer />);
     const searchEl = getByPlaceholderText('start typing to search');
     const changeEvent = createEvent.change(searchEl, {target: {value: 'ca'}});
 
@@ -29,7 +29,7 @@ describe('<App />', () => {
   });
 
   it('should show video channels if search phrase is longer than two', () => {
-    const { queryByTestId, getByPlaceholderText } = render(<App />);
+    const { queryByTestId, getByPlaceholderText } = render(<AppContainer />);
     const searchEl = getByPlaceholderText('start typing to search');
     const changeEvent = createEvent.change(searchEl, {target: {value: 'cat'}});
 

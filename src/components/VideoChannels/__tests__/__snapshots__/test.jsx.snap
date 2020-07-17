@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoChannels /> renders correctly 1`] = `
+<div>
+  <div
+    class="sc-fzoLag cQcBgo"
+    data-testid="video-channels-wrapper"
+  >
+    <div
+      class="sc-fzoXzr JoTkz"
+    >
+      <div
+        class="sc-AxjAm jcXas"
+        color="pink"
+      />
+    </div>
+    <div
+      class="sc-fzoXzr JoTkz"
+    >
+      <p>
+        Oops, there is no results for "
+        ".
+      </p>
+    </div>
+  </div>
+</div>
+`;
