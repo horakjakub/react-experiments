@@ -6,6 +6,9 @@ function getCheckIsBottomVisible(
   setIsVisible: (should: boolean) => void,
 ) {
   return function () {
+    console.log(
+      'isVisible checked from handler: ' + isElementBottomInViewPort(el),
+    );
     if (isElementBottomInViewPort(el)) {
       setIsVisible(true);
     } else {
@@ -16,6 +19,7 @@ function getCheckIsBottomVisible(
 
 function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isElementChanged, setIsElementChanged] = useState<boolean>(false);
   const element = elementRef.current;
 
   useEffect(() => {
@@ -31,10 +35,17 @@ function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
   }, [element]);
 
   useEffect(() => {
-    setIsVisible(isElementBottomInViewPort(element));
-  }, [setIsVisible, element]);
+    if (isElementChanged) {
+    
+    console.log(
+      'isVisible checked from useEffect: ' + isElementBottomInViewPort(element),
+    );
+      setIsVisible(isElementBottomInViewPort(element));
+      setIsElementChanged(false);
+    }
+  }, [setIsVisible, element, isElementChanged, setIsElementChanged]);
 
-  return {isVisible};
+  return {isVisible, setIsElementChanged};
 }
 
 export default useIsElementBottomVisible;

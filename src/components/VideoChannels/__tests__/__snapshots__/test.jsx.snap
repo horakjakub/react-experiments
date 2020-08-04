@@ -14,14 +14,6 @@ exports[`<VideoChannels /> renders correctly 1`] = `
         color="pink"
       />
     </div>
-    <div
-      class="sc-fzoXzr JoTkz"
-    >
-      <p>
-        Oops, there is no results for "
-        ".
-      </p>
-    </div>
   </div>
 </div>
 `;

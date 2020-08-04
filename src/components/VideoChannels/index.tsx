@@ -44,22 +44,35 @@ type Props = {
 };
 
 function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
-  const [shouldSearch, setShouldSearch] = useState<boolean>(true);
+  const [shouldSearch, setShouldSearch] = useState<boolean>(false);
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [videoChannels, setVideoChannels] = useState<VideoChannelType[]>([]);
   const [nextPageId, setNextPageId] = useState<string | null>(null);
-  const {isVisible: isWrapperBottomVisible} = useIsElementBottomVisible(
-    wrapperRef,
-  );
+  const {
+    isVisible: isBottomBorderVisible,
+    setIsElementChanged,
+  } = useIsElementBottomVisible(wrapperRef);
 
   const {debouncedPhrase} = useDebounce(searchPhrase);
   const {response, isLoading} = useVideoChannels(
-    shouldSearch ? debouncedPhrase : null,
+    shouldSearch && videoChannels.length < 30 ? debouncedPhrase : null,
     20,
     nextPageId,
   );
-  
+
   useEffect(() => {
+    setShouldSearch(
+      (isBottomBorderVisible &&
+        videoChannels.length &&
+        nextPageId !== 'none') ||
+        lastSearchPhrase !== debouncedPhrase,
+    );
+
+    if (lastSearchPhrase !== debouncedPhrase) {
+      setLastSearchPhrase(debouncedPhrase);
+      setVideoChannels([]);
+    }
+
     if (response) {
       const {nextPageToken} = response;
 
@@ -76,23 +89,18 @@ function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
       if (nextPageToken !== nextPageId) {
         setNextPageId(nextPageToken || 'none');
       }
-
-      if (lastSearchPhrase !== debouncedPhrase) {
-        setLastSearchPhrase(debouncedPhrase);
-        setVideoChannels([]);
-      }
-
-      setShouldSearch(
-        isWrapperBottomVisible || lastSearchPhrase !== debouncedPhrase,
-      );
+      setIsElementChanged(true);
+    } else {
+      setIsElementChanged(false);
     }
   }, [
     response,
     videoChannels,
     nextPageId,
-    isWrapperBottomVisible,
+    isBottomBorderVisible,
     debouncedPhrase,
     lastSearchPhrase,
+    setIsElementChanged
   ]);
 
   return (
