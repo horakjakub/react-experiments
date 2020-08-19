@@ -1,12 +1,12 @@
-import React, {ReactElement, useState, RefObject, useEffect} from 'react';
-import {differenceWith, isEqual} from 'lodash';
-import VideoChannelWithModal from 'components/VideoChannel';
-import Spinner from 'components/Spinner';
-import useVideoChannels, {mapToVideoChannels} from 'hooks/useVideoChannels';
-import {VideoChannelType} from 'common-types/video-channel.type';
-import useDebounce from 'hooks/useDebounce';
-import useIsElementBottomVisible from 'hooks/useIsElementBottomVisible';
-import {VideoChannelsGrid, ResultsPlaceholder} from './styled';
+import React, { ReactElement, useState, RefObject, useEffect } from "react";
+import { differenceWith, isEqual } from "lodash";
+import VideoChannelWithModal from "components/VideoChannel";
+import Spinner from "components/Spinner";
+import useVideoChannels, { mapToVideoChannels } from "hooks/useVideoChannels";
+import { VideoChannelType } from "common-types/video-channel.type";
+import useDebounce from "hooks/useDebounce";
+import useIsElementBottomVisible from "hooks/useIsElementBottomVisible";
+import { VideoChannelsGrid, ResultsPlaceholder } from "./styled";
 
 export default VideoChannels;
 
@@ -43,73 +43,84 @@ type Props = {
   wrapperRef: RefObject<HTMLElement>;
 };
 
-function VideoChannels({searchPhrase, wrapperRef}: Props): ReactElement {
+function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   const [shouldSearch, setShouldSearch] = useState<boolean>(false);
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [videoChannels, setVideoChannels] = useState<VideoChannelType[]>([]);
-  const [nextPageId, setNextPageId] = useState<string | null>(null);
+  const [pageId, setPageId] = useState<string>("firstPageId");
   const {
     isVisible: isBottomBorderVisible,
     setIsElementChanged,
   } = useIsElementBottomVisible(wrapperRef);
+  const [requestedPages, setRequestedPages] = useState<string[]>([]);
 
-  const {debouncedPhrase} = useDebounce(searchPhrase);
-  const {response, isLoading} = useVideoChannels(
-    shouldSearch && videoChannels.length < 30 ? debouncedPhrase : null,
+  const { throttledDebouncedPhrase } = useDebounce(searchPhrase);
+  const { response, isLoading, error } = useVideoChannels(
+    shouldSearch ? throttledDebouncedPhrase : null,
     20,
-    nextPageId,
+    pageId === "firstPageId" ? null : pageId
   );
 
   useEffect(() => {
-    setShouldSearch(
-      (isBottomBorderVisible &&
-        videoChannels.length &&
-        nextPageId !== 'none') ||
-        lastSearchPhrase !== debouncedPhrase,
+    const isPageAlreadyRequested = requestedPages.includes(pageId)
+      ? true
+      : false;
+
+    const phraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
+
+    const willSearch =
+      pageId !== "none" &&
+      !isLoading &&
+      !error &&
+      !isPageAlreadyRequested &&
+      ((!!throttledDebouncedPhrase && phraseChanged) ||
+        (!!throttledDebouncedPhrase &&
+          !!videoChannels.length &&
+          isBottomBorderVisible));
+
+    if (phraseChanged) {
+      setLastSearchPhrase(throttledDebouncedPhrase);
+      setVideoChannels([]);
+      setRequestedPages([]);
+      setPageId("firstPageId");
+    }
+
+    if (willSearch) {
+      setRequestedPages([...requestedPages, pageId]);
+    }
+
+    setShouldSearch(willSearch);
+  }, [throttledDebouncedPhrase, isBottomBorderVisible, response]);
+
+  useEffect(() => {
+    if (!response) return setIsElementChanged(false);
+
+    const newChannels = differenceWith(
+      mapToVideoChannels(response),
+      videoChannels,
+      isEqual
     );
 
-    if (lastSearchPhrase !== debouncedPhrase) {
-      setLastSearchPhrase(debouncedPhrase);
-      setVideoChannels([]);
+    if (newChannels.length) {
+      setVideoChannels([...videoChannels, ...newChannels]);
+    }
+    const { nextPageToken } = response;
+
+    if (nextPageToken !== pageId) {
+      setPageId(nextPageToken || "none");
     }
 
-    if (response) {
-      const {nextPageToken} = response;
-
-      const newChannels = differenceWith(
-        mapToVideoChannels(response),
-        videoChannels,
-        isEqual,
-      );
-
-      if (newChannels.length) {
-        setVideoChannels([...videoChannels, ...newChannels]);
-      }
-
-      if (nextPageToken !== nextPageId) {
-        setNextPageId(nextPageToken || 'none');
-      }
-      setIsElementChanged(true);
-    } else {
-      setIsElementChanged(false);
-    }
-  }, [
-    response,
-    videoChannels,
-    nextPageId,
-    isBottomBorderVisible,
-    debouncedPhrase,
-    lastSearchPhrase,
-    setIsElementChanged
-  ]);
+    setIsElementChanged(true);
+  }, [response]);
 
   return (
     <VideoChannelsWrapper
-      isLoading={isLoading}
+      isLoading={false}
       searchPhrase={searchPhrase}
-      isNoMoreResults={nextPageId === 'none'}>
+      isNoMoreResults={pageId === "none"}
+    >
       <>
-        {videoChannels.map(videoChannelProps => (
+        {videoChannels.map((videoChannelProps) => (
           <VideoChannelWithModal
             {...videoChannelProps}
             key={videoChannelProps.id}

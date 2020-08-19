@@ -1,13 +1,14 @@
-import React, {ReactElement, useState} from 'react';
-import {VideoChannelType} from 'common-types/video-channel.type';
-import DetailsModal from 'components/ChannelDetails';
+import React, { ReactElement, useState } from "react";
+import { VideoChannelType } from "common-types/video-channel.type";
+import DetailsModal from "components/ChannelDetails";
+import { ImgError } from "common-components";
 import {
   VideoChannelWrapper,
   VideoChannelBox,
   Figure,
   Img,
   Description,
-} from './styled';
+} from "./styled";
 
 export default VideoChannelWithModal;
 
@@ -39,11 +40,22 @@ export function VideoChannel({
   description,
   thumbnailUrl,
 }: Props): ReactElement {
+  const [error, setError] = useState<boolean>(false);
+
   return (
     <VideoChannelWrapper onClick={onClick}>
       <VideoChannelBox>
         <Figure>
-          <Img src={thumbnailUrl} />
+          {error ? (
+            <ImgError size={"big"} />
+          ) : (
+            <Img
+              onError={(e) => {
+                setError(true);
+              }}
+              src={thumbnailUrl}
+            />
+          )}
         </Figure>
         <Description>
           <h3> {title} </h3>

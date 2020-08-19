@@ -1,9 +1,10 @@
-import React, {ReactElement, SyntheticEvent} from 'react';
-import {createPortal} from 'react-dom';
-import {VideoType} from 'common-types/video.type';
-import Spinner from 'components/Spinner';
-import Video from 'components/Video';
-import useVideos from 'hooks/useVideos';
+import React, { ReactElement, SyntheticEvent, useState } from "react";
+import { createPortal } from "react-dom";
+import { VideoType } from "common-types/video.type";
+import Spinner from "components/Spinner";
+import Video from "components/Video";
+import { ImgError } from "common-components";
+import useVideos from "hooks/useVideos";
 import {
   Blanket,
   CloseButton,
@@ -16,7 +17,7 @@ import {
   Hr,
   Content,
   VideosPlaceholder,
-} from './styled';
+} from "./styled";
 
 export default ChannelDetailsModalWithPortal;
 
@@ -31,13 +32,13 @@ type Props = {
 function ChannelDetailsModalWithPortal(props: Props): ReactElement {
   return createPortal(
     <ChannelDetailsModalWithVideos {...props} />,
-    document.body,
+    document.body
   );
 }
 
 function ChannelDetailsModalWithVideos(props: Props): ReactElement {
-  const {id} = props;
-  const {response, isLoading} = useVideos(id);
+  const { id } = props;
+  const { response, isLoading } = useVideos(id);
   const videos = response || [];
   return (
     <ChannelDetailsModal {...props} videos={videos} isLoading={isLoading} />
@@ -57,13 +58,19 @@ export function ChannelDetailsModal({
   videos,
   isLoading,
 }: ChannelDetailModalProps): ReactElement {
+  const [isImgError, setIsImgError] = useState<boolean>(false);
+
   return (
     <Blanket onClick={witchOnDirectClick(closeModal)}>
       <CloseButton onClick={witchOnDirectClick(closeModal)}>X</CloseButton>
       <Modal>
         <Content>
           <Header>
-            <Img src={thumbnailUrl} />
+            {isImgError ? (
+              <ImgError size={"small"} />
+            ) : (
+              <Img onError={() => setIsImgError(true)} src={thumbnailUrl} />
+            )}
             <Title> {title} </Title>
           </Header>
           <Hr />

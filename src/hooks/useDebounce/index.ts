@@ -1,16 +1,24 @@
-import {useState, useEffect} from 'react';
-import {debounce} from 'lodash';
+import { useState, useEffect } from 'react';
+import { throttle, debounce } from 'lodash';
 
-export default useDebounce;
+export default useThrottleDebounce;
 
-function useDebounce(phrase: string | null): {debouncedPhrase: string | null} {
-  const [debouncedPhrase, setDebouncedPhrase] = useState<string | null>(null);
+function useThrottleDebounce(phrase: string | null): { throttledDebouncedPhrase: string | null } {
+  const [throttledDebouncedPhrase, setThrottledDebouncedPhrase] = useState<string | null>(null);
 
-  const setDebounced = debounce(txt => setDebouncedPhrase(txt), 300);
+  const setThrottled = throttle(txt => {
+    setThrottledDebouncedPhrase(txt);
+  }, 300);
+
+  const setDebounced = debounce(txt => {
+    setThrottledDebouncedPhrase(txt);
+  }, 300);
 
   useEffect(() => {
-    setDebounced(phrase);
-  }, [phrase, setDebounced]);
+    if (phrase) {
+      phrase.length < 5 ? setDebounced(phrase) : setThrottled(phrase);
+    }
+  }, [phrase, setDebounced, setThrottled]);
 
-  return {debouncedPhrase};
+  return { throttledDebouncedPhrase };
 }

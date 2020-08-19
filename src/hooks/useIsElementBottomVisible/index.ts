@@ -1,20 +1,18 @@
 import {useEffect, useState, RefObject} from 'react';
+import { throttle } from 'lodash';
 import isElementBottomInViewPort from 'utils/element-bottom-visible.helpers';
 
 function getCheckIsBottomVisible(
   el: HTMLElement | null,
   setIsVisible: (should: boolean) => void,
 ) {
-  return function () {
-    console.log(
-      'isVisible checked from handler: ' + isElementBottomInViewPort(el),
-    );
+  return throttle(function () {
     if (isElementBottomInViewPort(el)) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
     }
-  };
+  }, 16);
 }
 
 function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
@@ -36,10 +34,6 @@ function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
 
   useEffect(() => {
     if (isElementChanged) {
-    
-    console.log(
-      'isVisible checked from useEffect: ' + isElementBottomInViewPort(element),
-    );
       setIsVisible(isElementBottomInViewPort(element));
       setIsElementChanged(false);
     }

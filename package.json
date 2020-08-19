@@ -6,6 +6,7 @@
     "@rebass/forms": "^4.0.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
+    "@testing-library/react-hooks": "^3.4.1",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^25.2.1",
     "@types/lodash": "^4.14.150",
@@ -17,7 +18,7 @@
     "@types/rebass__forms": "^4.0.1",
     "bootstrap": "^4.5.0",
     "i": "^0.3.6",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
@@ -30,6 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-mock-api": "REACT_APP_MOCK_API=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -80,6 +82,7 @@
     "eslint-plugin-react-hooks": "4.0.0",
     "prettier": "2.0.5",
     "prettier-eslint": "9.0.1",
-    "prettier-eslint-cli": "5.0.0"
+    "prettier-eslint-cli": "5.0.0",
+    "react-test-renderer": "^16.13.1"
   }
 }
