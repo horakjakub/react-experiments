@@ -115,7 +115,7 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
 
   return (
     <VideoChannelsWrapper
-      isLoading={false}
+      isLoading={isLoading}
       searchPhrase={searchPhrase}
       isNoMoreResults={pageId === "none"}
     >
