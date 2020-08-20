@@ -19,16 +19,13 @@ function useFetch<T>({ url }: { url: string | null }): ApiResponse<T> {
     const responsePromise = USE_MOCK_API ? fetchMockBasedOnUrl(url) : fetch(url); 
 
     responsePromise
-    //@ts-ignore
       .then((res) => res.json())
-    //@ts-ignore
       .then((res) => {
         if ("error" in res) {
           throw new Error(
             JSON.stringify({ message: "server error", error: res.error })
           );
         }
-        // @ts-ignore
         setResponse(res);
       })
       .catch((e: Error) => {

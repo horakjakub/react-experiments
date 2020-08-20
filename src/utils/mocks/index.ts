@@ -32,30 +32,31 @@ export function getModifiedSearchResponseMock(
   return responseCopy;
 }
 
-type ResponseMock<T> = Promise<{ json: () => Promise<T> }>;
-
-export function fetchMock<T>(url: string, response: T): ResponseMock<T> {
+export function fetchMock(url: string, response: any): Promise<Response> {
   console.log(`started fetch for url: ${url}`);
 
-  const jsonResponseMock = new Promise<T>((resolve) => {
+  const jsonResponseMock = new Promise((resolve) => {
     resolve(response);
     console.log(`delivered response for: ${url}`);
   });
 
   const rawResponseMock = {
-    json: function (): Promise<T> {
+    json: function () {
       return jsonResponseMock;
     },
   };
 
-  return new Promise<{ json: () => Promise<T> }>((resolve) =>
-    setTimeout(() => resolve(rawResponseMock), 200 + Math.random() * 100)
+  return new Promise((resolve) =>
+    setTimeout(
+      () => resolve(rawResponseMock as Response),
+      200 + Math.random() * 100
+    )
   );
 }
 
 let counter = 0;
 
-export function fetchMockBasedOnUrl(url: string): ResponseMock<YTResponse> {
+export function fetchMockBasedOnUrl(url: string): Promise<Response> {
   if (url.includes("channels")) {
     return fetchMock(url, channelsResposneMock);
   }
