@@ -1,8 +1,6 @@
 import { videosMockData } from "./videos.mock-data";
 import { VideoType } from "common-types/video.type";
-import YTResponse, {
-  YTSearchResponseChannel,
-} from "common-types/yt-response.type";
+import { YTSearchResponseChannel } from "common-types/yt-response.type";
 import { VideoChannelType } from "common-types/video-channel.type";
 import videoChannelsData from "./video-channels.mock-data";
 import searchResponseMock from "./search-response.mock-data";

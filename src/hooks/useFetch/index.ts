@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import type { ApiResponseType as ApiResponse } from "./api-response.type";
+import type { FetchHookResponseType as FetchHookResponse, ApiResponseType as ApiResponse } from "./api-response.type";
 import { fetchMockBasedOnUrl} from "utils/mocks";
 import { USE_MOCK_API } from "utils/constants";
 
-export default useFetch;
-
+export type FetchHookResponseType<T> = FetchHookResponse<T>; 
 export type ApiResponseType<T> = ApiResponse<T>;
 
-function useFetch<T>({ url }: { url: string | null }): ApiResponse<T> {
+export default useFetch;
+
+function useFetch<T>({ initialUrl }: { initialUrl: string }): FetchHookResponseType<T> {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
-
+  const [url, setUrl] = useState<string>(initialUrl); 
+  
   useEffect(() => {
     if (!url) return;
     setIsLoading(true);
-
     const responsePromise = USE_MOCK_API ? fetchMockBasedOnUrl(url) : fetch(url); 
 
     responsePromise
@@ -36,9 +37,14 @@ function useFetch<T>({ url }: { url: string | null }): ApiResponse<T> {
       });
   }, [url]);
 
-  return {
+
+  useEffect(() => {
+    if (initialUrl && url !== initialUrl) setUrl(initialUrl); 
+  }, [url, initialUrl])
+
+  return [{
     isLoading,
     response,
     error,
-  };
+  }, setUrl];
 }

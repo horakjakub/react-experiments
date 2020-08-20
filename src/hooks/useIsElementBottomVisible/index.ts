@@ -1,10 +1,10 @@
-import {useEffect, useState, RefObject} from 'react';
-import { throttle } from 'lodash';
-import isElementBottomInViewPort from 'utils/element-bottom-visible.helpers';
+import { useEffect, useState, RefObject } from "react";
+import { throttle } from "lodash";
+import isElementBottomInViewPort from "utils/element-bottom-visible.helpers";
 
 function getCheckIsBottomVisible(
   el: HTMLElement | null,
-  setIsVisible: (should: boolean) => void,
+  setIsVisible: (should: boolean) => void
 ) {
   return throttle(function () {
     if (isElementBottomInViewPort(el)) {
@@ -21,25 +21,33 @@ function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
   const element = elementRef.current;
 
   useEffect(() => {
-    const handleWindowChange = getCheckIsBottomVisible(element, isVis => {
-      setIsVisible(isVis);
-    });
-    window.addEventListener('scroll', handleWindowChange);
-    window.addEventListener('resize', handleWindowChange);
-    return () => {
-      window.removeEventListener('scroll', handleWindowChange);
-      window.removeEventListener('resize', handleWindowChange);
+    const setIsVisibleIfChanged = function (visible: boolean) {
+      setIsVisible(isVisible !== visible);
     };
-  }, [element]);
+
+    const handleWindowChange = getCheckIsBottomVisible(element, (isVis) => {
+      setIsVisibleIfChanged(isVis);
+    });
+    window.addEventListener("scroll", handleWindowChange);
+    window.addEventListener("resize", handleWindowChange);
+    return () => {
+      window.removeEventListener("scroll", handleWindowChange);
+      window.removeEventListener("resize", handleWindowChange);
+    };
+  }, [element, setIsVisible, isVisible]);
 
   useEffect(() => {
     if (isElementChanged) {
-      setIsVisible(isElementBottomInViewPort(element));
+      const setIsVisibleIfChanged = function (visible: boolean) {
+        setIsVisible(isVisible !== visible);
+      };
+
+      setIsVisibleIfChanged(isElementBottomInViewPort(element));
       setIsElementChanged(false);
     }
-  }, [setIsVisible, element, isElementChanged, setIsElementChanged]);
+  }, [setIsVisible, element, isElementChanged, setIsElementChanged, isVisible]);
 
-  return {isVisible, setIsElementChanged};
+  return { isVisible, setIsElementChanged };
 }
 
 export default useIsElementBottomVisible;

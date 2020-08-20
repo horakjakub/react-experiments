@@ -16,22 +16,28 @@ export function mapToVideoChannels(
     : [];
 }
 
-function useVideoChannels(
-  searchPhrase: string | null,
-  resultsNo: number,
-  pageToken: string | null
-): ApiResponseType<YTSearchResponseChannel | null> {
-  const { response, error, isLoading } = useFetch<YTSearchResponseChannel>({
-    url: searchPhrase
-      ? getYTApiSearchUrl(searchPhrase, resultsNo || 1, pageToken || undefined)
-      : "",
+function useVideoChannels(): [
+  ApiResponseType<YTSearchResponseChannel | null>,
+  (searchPhrase: string, resultsNo: number, pageToken: string | null) => void
+] {
+  const [{ response, error, isLoading }, doFetch] = useFetch<
+    YTSearchResponseChannel
+  >({
+    initialUrl: "",
   });
 
-  return {
-    response,
-    error,
-    isLoading,
-  };
+  return [
+    {
+      response,
+      error,
+      isLoading,
+    },
+    (searchPhrase, resultsNo, pageToken) => {
+      doFetch(
+        getYTApiSearchUrl(searchPhrase, resultsNo || 1, pageToken || undefined)
+      );
+    },
+  ];
 }
 
 export default useVideoChannels;
