@@ -1,17 +1,17 @@
 # TODO 
 
-. Add tests for everything
-. Check possibilities of testing with Storybook 
-. Introduce React.StrictMode 
-. Pure Component and use memo 
-. use hooks 
-. Better prettier settings
-. Test on mobile devices 
-. Placeholder for situation when image cannot be fetched 
-. Error handling (maybe in modal)
-. Check nullable is justified in hooks
-. Improve logic behind "no results" in Video Channels
-. Replace img in VideoChannel component with picture with different sources if possible
+- test whole logic and check again if everything works ("no results") 
+- check if storybook is updated 
+- check files structure and components placement
+- check types 
+- update README (add info, about start with mock data)
+- add no results 
+
+
+- better prettier settings
+- test on mobile devices 
+- error handling (maybe in modal)
+- improve logic behind "no results" in Video Channels
 
 TEST 
 
@@ -50,7 +50,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Note: this is a one-way operation.Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 

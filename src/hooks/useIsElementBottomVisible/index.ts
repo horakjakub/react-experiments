@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from "react";
 import { throttle } from "lodash";
-import isElementBottomInViewPort from "utils/element-bottom-visible.helpers";
+import isElementBottomInViewPort from "./helpers";
 
 function getCheckIsBottomVisible(
   el: HTMLElement | null,
