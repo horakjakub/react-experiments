@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import styled from 'styled-components';
+import { FC, CSSProperties } from "react";
+import styled from "styled-components";
 
 export const Bar: FC = styled.div`
   position: fixed;
@@ -13,7 +13,8 @@ export const Bar: FC = styled.div`
   align-items: center;
   border-bottom: 1px solid #eee;
   input {
-    font-size: 1.6em; font-family: 'Lato', sans-serif;
+    font-size: 1.6em;
+    font-family: "Lato", sans-serif;
     ::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
       color: pink;
@@ -37,3 +38,9 @@ export const Bar: FC = styled.div`
     }
   }
 `;
+
+export const SearchIconStyles: CSSProperties = {
+  fontSize: "2em",
+  margin: "0.6em",
+  color: "#999999",
+};

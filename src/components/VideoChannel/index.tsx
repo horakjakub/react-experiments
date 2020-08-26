@@ -40,18 +40,18 @@ export function VideoChannel({
   description,
   thumbnailUrl,
 }: Props): ReactElement {
-  const [error, setError] = useState<boolean>(false);
+  const [isImgError, setIsImgError] = useState<boolean>(false);
 
   return (
     <VideoChannelWrapper onClick={onClick}>
       <VideoChannelBox>
         <Figure>
-          {error ? (
+          {isImgError ? (
             <ImgError size={"big"} />
           ) : (
             <Img
               onError={(e) => {
-                setError(true);
+                setIsImgError(true);
               }}
               src={thumbnailUrl}
             />

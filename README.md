@@ -6,6 +6,8 @@
 - check types 
 - update README (add info, about start with mock data)
 - add basic tests 
+- move spinner to common components
+- maybe decouple VideoChannels hooks
 
 - add mocks with error and no results 
 - improve styles for not so many videos 

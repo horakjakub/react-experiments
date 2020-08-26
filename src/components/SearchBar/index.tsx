@@ -1,8 +1,9 @@
-import React, {ReactElement, ChangeEvent} from 'react';
-import {MdSearch} from 'react-icons/md';
-import {Input} from '@rebass/forms';
-import {SearchVideoChannelContext} from 'providers/search-channel.provider';
-import {Bar} from './styled';
+import React, { ReactElement  } from "react";
+import { MdSearch } from "react-icons/md";
+import { Input } from "@rebass/forms";
+import { SearchVideoChannelContext } from "providers/search-channel.provider";
+import { Bar, SearchIconStyles } from "./styled";
+import { withOnChange } from "./helpers";
 
 export default SearchBarWithConsumer;
 
@@ -11,10 +12,10 @@ type Props = {
   setPhrase: (phrase: string) => void;
 };
 
-export function Search({phrase, setPhrase}: Props): ReactElement {
+export function Search({ phrase, setPhrase }: Props): ReactElement {
   return (
     <Bar>
-      <MdSearch style={{fontSize: '2em', margin: '0 .6em', color: '#999999'}} />
+      <MdSearch style={SearchIconStyles} />
       <Input
         id="searchVideo"
         name="searchVideo"
@@ -28,18 +29,10 @@ export function Search({phrase, setPhrase}: Props): ReactElement {
   );
 }
 
-export function withOnChange(
-  func: (state: string) => void,
-): (e: ChangeEvent<HTMLInputElement>) => void {
-  return e => {
-    func(e.target.value);
-  };
-}
-
 function SearchBarWithConsumer(): ReactElement {
   return (
     <SearchVideoChannelContext.Consumer>
-      {({phrase, setPhrase}) => {
+      {({ phrase, setPhrase }) => {
         return <Search phrase={phrase} setPhrase={setPhrase} />;
       }}
     </SearchVideoChannelContext.Consumer>

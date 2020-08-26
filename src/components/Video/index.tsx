@@ -27,4 +27,4 @@ function Video({
       <Background imageUrl={thumbnailUrl} />
     </Wrapper>
   );
-}
+} 

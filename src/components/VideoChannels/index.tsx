@@ -1,45 +1,13 @@
 import React, { ReactElement, useState, RefObject, useEffect } from "react";
 import { differenceWith, isEqual } from "lodash";
 import VideoChannelWithModal from "components/VideoChannel";
-import Spinner from "components/Spinner";
+import VideoChannelsWrapper from "components/VideoChannelsWrapper";
 import useVideoChannels, { mapToVideoChannels } from "hooks/useVideoChannels";
 import { VideoChannelType } from "common-types/video-channel.type";
 import useDebounce from "hooks/useDebounce";
 import useIsElementBottomVisible from "hooks/useIsElementBottomVisible";
-import { VideoChannelsGrid, ResultsPlaceholder } from "./styled";
 
 export default VideoChannels;
-
-export function VideoChannelsWrapper({
-  children,
-  isLoading,
-  isNoMoreResults,
-  searchPhrase,
-  error,
-}: {
-  children: ReactElement;
-  isLoading: boolean;
-  isNoMoreResults: boolean;
-  searchPhrase: string;
-  error: Error | null;
-}) {
-  return (
-    <VideoChannelsGrid data-testid="video-channels-wrapper">
-      {children}
-      {isLoading && (
-        <ResultsPlaceholder>
-          <Spinner size="6em" color="pink" />
-        </ResultsPlaceholder>
-      )}
-      {isNoMoreResults && (
-        <ResultsPlaceholder>
-          <p>Oops, there is no results for "{searchPhrase}".</p>
-        </ResultsPlaceholder>
-      )}
-      {error && error.message.includes("403") && <div>Error message</div>}
-    </VideoChannelsGrid>
-  );
-}
 
 type Props = {
   searchPhrase: string;
@@ -55,11 +23,10 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
     isVisible: isBottomBorderVisible,
     elementChanged: containerElementChanged,
   } = useIsElementBottomVisible(wrapperRef);
-  const [requestedPages, setRequestedPages] = useState<string[]>([pageId]);
+  const [requestedPages, setRequestedPages] = useState<string[]>([]);
   const { throttledDebouncedPhrase } = useDebounce(searchPhrase);
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [lastResponseId, setLastResponseId] = useState<string>();
-
   const [{ response, isLoading, error }, doFetch] = useVideoChannels();
 
   useEffect(() => {
@@ -69,15 +36,13 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
 
     const phraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
 
-    const willSearch =
+    const shouldSearch =
       pageId !== "none" &&
       !isLoading &&
       !error &&
       !isPageAlreadyRequested &&
       !!throttledDebouncedPhrase &&
-      (phraseChanged ||
-        !videoChannels.length ||
-        (!!videoChannels.length && isBottomBorderVisible));
+      (phraseChanged || (!!videoChannels.length && isBottomBorderVisible));
 
     if (phraseChanged) {
       window.scrollTo(0, 0);
@@ -87,11 +52,11 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
       setPageId(FIRST_PAGE_ID);
     }
 
-    if (!phraseChanged && willSearch) {
+    if (phraseChanged && shouldSearch) {
       setRequestedPages([...requestedPages, pageId]);
     }
 
-    if (willSearch) {
+    if (shouldSearch) {
       doFetch(
         throttledDebouncedPhrase || "",
         20,
@@ -113,7 +78,7 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   useEffect(() => {
     if (!response || response.etag === lastResponseId) return;
     setLastResponseId(response.etag);
-    
+
     const newChannels = differenceWith(
       mapToVideoChannels(response),
       videoChannels,
@@ -130,7 +95,13 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
     }
 
     containerElementChanged();
-  }, [response, videoChannels, pageId, containerElementChanged, lastResponseId]);
+  }, [
+    response,
+    videoChannels,
+    pageId,
+    containerElementChanged,
+    lastResponseId,
+  ]);
 
   return (
     <VideoChannelsWrapper

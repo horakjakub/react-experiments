@@ -1,4 +1,4 @@
-import React, { ReactElement, SyntheticEvent, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { createPortal } from "react-dom";
 import { VideoType } from "common-types/video.type";
 import Spinner from "components/Spinner";
@@ -18,6 +18,7 @@ import {
   Content,
   VideosPlaceholder,
 } from "./styled";
+import { witchOnDirectClick } from './helpers';
 
 export default ChannelDetailsModalWithPortal;
 
@@ -90,9 +91,4 @@ export function ChannelDetailsModal({
       </Modal>
     </Blanket>
   );
-}
-
-function witchOnDirectClick(func: () => void): (e: SyntheticEvent) => void {
-  return (e: SyntheticEvent) =>
-    e.target === e.currentTarget ? func() : undefined;
 }

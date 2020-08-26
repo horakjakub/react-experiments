@@ -1,21 +1,21 @@
-import React, {useRef} from 'react';
-import SearchBar from 'components/SearchBar';
+import React, { useRef } from "react";
+import SearchBar from "components/SearchBar";
 import {
   SearchVideoChannelContextProvider,
   SearchVideoChannelContext,
-} from 'providers/search-channel.provider';
-import VideoChannels from 'components/VideoChannels';
-import GlobalStyle from 'global-styles';
+} from "providers/search-channel.provider";
+import VideoChannels from "components/VideoChannels";
+import GlobalStyles from "global-styles";
 
-const App = () => {
-  const searchResultsWrapperEl = useRef(null);
+function AppContainer() {
+  const searchResultsWrapperEl = useRef<HTMLDivElement>(null);
   return (
     <SearchVideoChannelContextProvider>
-      <GlobalStyle />
+      <GlobalStyles />
       <SearchBar />
       <div ref={searchResultsWrapperEl}>
         <SearchVideoChannelContext.Consumer>
-          {({phrase}) => {
+          {({ phrase }) => {
             if (phrase.length > 2) {
               return (
                 <VideoChannels
@@ -30,6 +30,6 @@ const App = () => {
       </div>
     </SearchVideoChannelContextProvider>
   );
-};
+}
 
-export default App;
+export default AppContainer;
