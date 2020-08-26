@@ -4,6 +4,7 @@ type YTResponse = {
 };
 
 export type YTSearchResponseChannel = {
+  etag: string;
   nextPageToken: string;
   items: {
     snippet: {

@@ -18,7 +18,11 @@ export function mapToVideoChannels(
 
 function useVideoChannels(): [
   ApiResponseType<YTSearchResponseChannel | null>,
-  (searchPhrase: string, resultsNo: number, pageToken: string | null) => void
+  (
+    searchPhrase: string | null,
+    resultsNo?: number,
+    pageToken?: string | null
+  ) => void
 ] {
   const [{ response, error, isLoading }, doFetch] = useFetch<
     YTSearchResponseChannel
@@ -34,7 +38,13 @@ function useVideoChannels(): [
     },
     (searchPhrase, resultsNo, pageToken) => {
       doFetch(
-        getYTApiSearchUrl(searchPhrase, resultsNo || 1, pageToken || undefined)
+        searchPhrase
+          ? getYTApiSearchUrl(
+              searchPhrase,
+              resultsNo || 1,
+              pageToken || undefined
+            )
+          : null
       );
     },
   ];

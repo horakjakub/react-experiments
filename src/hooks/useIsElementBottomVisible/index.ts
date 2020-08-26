@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from "react";
+import { useEffect, useState, useCallback, RefObject } from "react";
 import { throttle } from "lodash";
 import isElementBottomInViewPort from "./helpers";
 
@@ -15,18 +15,27 @@ function getCheckIsBottomVisible(
   }, 16);
 }
 
-function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
+function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>): {
+  isVisible: boolean,
+  elementChanged: () => void
+} {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isElementChanged, setIsElementChanged] = useState<boolean>(false);
-  const element = elementRef.current;
+  const { current: element } = elementRef;
+  const elHeight = element ? element.offsetHeight : 0;
+  const [elementHeight, setElementHeight] = useState<number>(elHeight);
+
+  const triggerCheckIsVisible = useCallback<(element: HTMLElement)=> void>((element) => {
+     const visible = isElementBottomInViewPort(element);
+    if (isVisible !== visible) {
+      setIsVisible(visible);
+    }
+   }, [isVisible, setIsVisible])
 
   useEffect(() => {
-    const setIsVisibleIfChanged = function (visible: boolean) {
-      setIsVisible(isVisible !== visible);
-    };
-
-    const handleWindowChange = getCheckIsBottomVisible(element, (isVis) => {
-      setIsVisibleIfChanged(isVis);
+    const handleWindowChange = getCheckIsBottomVisible(element, (visible) => {
+      if (isVisible !== visible) {
+        setIsVisible(visible);
+      }
     });
     window.addEventListener("scroll", handleWindowChange);
     window.addEventListener("resize", handleWindowChange);
@@ -37,17 +46,22 @@ function useIsElementBottomVisible(elementRef: RefObject<HTMLElement>) {
   }, [element, setIsVisible, isVisible]);
 
   useEffect(() => {
-    if (isElementChanged) {
-      const setIsVisibleIfChanged = function (visible: boolean) {
-        setIsVisible(isVisible !== visible);
-      };
+    const checkHeightInterval = setInterval(() => {
+      if (element && elementHeight !== element.offsetHeight) {
+        setElementHeight(element.offsetHeight);
+        triggerCheckIsVisible(element);
+      }
+    }, 100);
 
-      setIsVisibleIfChanged(isElementBottomInViewPort(element));
-      setIsElementChanged(false);
-    }
-  }, [setIsVisible, element, isElementChanged, setIsElementChanged, isVisible]);
+    return () => clearInterval(checkHeightInterval);
+  }, [elementHeight, element, triggerCheckIsVisible]);
 
-  return { isVisible, setIsElementChanged };
+  return {
+    isVisible,
+    elementChanged: () => {
+      setIsVisible(false);
+    },
+  };
 }
 
 export default useIsElementBottomVisible;

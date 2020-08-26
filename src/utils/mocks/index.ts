@@ -22,6 +22,7 @@ export function getModifiedSearchResponseMock(
   modifier: number
 ): YTSearchResponseChannel {
   const responseCopy = JSON.parse(JSON.stringify(response));
+  responseCopy.etag = `${responseCopy.etag}${modifier}`;
   responseCopy.nextPageToken = modifier;
   responseCopy.items = responseCopy.items.map((item: any) => {
     item.snippet.channelId = `${item.snippet.channelId}${modifier}`;

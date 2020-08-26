@@ -15,11 +15,13 @@ export function VideoChannelsWrapper({
   isLoading,
   isNoMoreResults,
   searchPhrase,
+  error,
 }: {
   children: ReactElement;
   isLoading: boolean;
   isNoMoreResults: boolean;
   searchPhrase: string;
+  error: Error | null;
 }) {
   return (
     <VideoChannelsGrid data-testid="video-channels-wrapper">
@@ -34,6 +36,7 @@ export function VideoChannelsWrapper({
           <p>Oops, there is no results for "{searchPhrase}".</p>
         </ResultsPlaceholder>
       )}
+      {error && error.message.includes("403") && <div>Error message</div>}
     </VideoChannelsGrid>
   );
 }
@@ -50,13 +53,12 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   const [pageId, setPageId] = useState<string>(FIRST_PAGE_ID);
   const {
     isVisible: isBottomBorderVisible,
-    setIsElementChanged,
+    elementChanged: containerElementChanged,
   } = useIsElementBottomVisible(wrapperRef);
   const [requestedPages, setRequestedPages] = useState<string[]>([pageId]);
   const { throttledDebouncedPhrase } = useDebounce(searchPhrase);
-  const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(
-    throttledDebouncedPhrase
-  );
+  const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
+  const [lastResponseId, setLastResponseId] = useState<string>();
 
   const [{ response, isLoading, error }, doFetch] = useVideoChannels();
 
@@ -78,15 +80,23 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
         (!!videoChannels.length && isBottomBorderVisible));
 
     if (phraseChanged) {
+      window.scrollTo(0, 0);
       setLastSearchPhrase(throttledDebouncedPhrase);
       setVideoChannels([]);
       setRequestedPages([]);
       setPageId(FIRST_PAGE_ID);
     }
 
-    if (willSearch) {
+    if (!phraseChanged && willSearch) {
       setRequestedPages([...requestedPages, pageId]);
-      doFetch(throttledDebouncedPhrase || "", 20, pageId === FIRST_PAGE_ID ? null : pageId);
+    }
+
+    if (willSearch) {
+      doFetch(
+        throttledDebouncedPhrase || "",
+        20,
+        pageId === FIRST_PAGE_ID || phraseChanged ? null : pageId
+      );
     }
   }, [
     throttledDebouncedPhrase,
@@ -101,8 +111,9 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   ]);
 
   useEffect(() => {
-    if (!response) return setIsElementChanged(false);
-
+    if (!response || response.etag === lastResponseId) return;
+    setLastResponseId(response.etag);
+    
     const newChannels = differenceWith(
       mapToVideoChannels(response),
       videoChannels,
@@ -113,19 +124,20 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
       setVideoChannels([...videoChannels, ...newChannels]);
     }
 
-    const { nextPageToken } = response; 
+    const { nextPageToken } = response;
     if (nextPageToken !== pageId) {
       setPageId(nextPageToken || "none");
     }
 
-    setIsElementChanged(true);
-  }, [response, videoChannels, pageId, setIsElementChanged]);
+    containerElementChanged();
+  }, [response, videoChannels, pageId, containerElementChanged, lastResponseId]);
 
   return (
     <VideoChannelsWrapper
       isLoading={isLoading}
       searchPhrase={searchPhrase}
       isNoMoreResults={pageId === "none"}
+      error={error}
     >
       <>
         {videoChannels.map((videoChannelProps) => (

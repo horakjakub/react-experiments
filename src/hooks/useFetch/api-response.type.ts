@@ -8,5 +8,5 @@ export type ApiResponseType<T> = {
 
 export type FetchHookResponseType<T> = [
   ApiResponseType<T>,
-  Dispatch<SetStateAction<string>>
+  Dispatch<SetStateAction<string | null>>
 ];

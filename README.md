@@ -1,16 +1,17 @@
 # TODO 
 
-- test whole logic and check again if everything works ("no results") 
-- check if storybook is updated 
-- check files structure and components placement
+- check logic  
+- improve component names (channel details),  
+- add missing component states in storybooks (with)
 - check types 
 - update README (add info, about start with mock data)
-- add no results 
+- add basic tests 
 
-
+- add mocks with error and no results 
+- improve styles for not so many videos 
 - better prettier settings
 - test on mobile devices 
-- error handling (maybe in modal)
+- better error handling (maybe in modal)
 - improve logic behind "no results" in Video Channels
 
 TEST 
