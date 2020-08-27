@@ -1,7 +1,9 @@
 import React, { ReactElement } from "react";
 import { ImgErrorPlaceholder } from "./styled";
 
-export function ImgError({ size }: { size: string }): ReactElement {
+export default ImgError;
+
+function ImgError({ size }: { size: string }): ReactElement {
   return (
     <ImgErrorPlaceholder size={size}>
       <p>Ooops! </p>

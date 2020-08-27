@@ -4,7 +4,7 @@ import VideoChannelWithModal from "components/VideoChannel";
 import VideoChannelsWrapper from "components/VideoChannelsWrapper";
 import useVideoChannels, { mapToVideoChannels } from "hooks/useVideoChannels";
 import { VideoChannelType } from "common-types/video-channel.type";
-import useDebounce from "hooks/useDebounce";
+import useThrottleDebounce from "hooks/useThrottleDebounce";
 import useIsElementBottomVisible from "hooks/useIsElementBottomVisible";
 
 export default VideoChannels;
@@ -23,24 +23,16 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
     isVisible: isBottomBorderVisible,
     elementChanged: containerElementChanged,
   } = useIsElementBottomVisible(wrapperRef);
-  const [requestedPages, setRequestedPages] = useState<string[]>([]);
-  const { throttledDebouncedPhrase } = useDebounce(searchPhrase);
+  const { throttledDebouncedPhrase } = useThrottleDebounce(searchPhrase);
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [lastResponseId, setLastResponseId] = useState<string>();
   const [{ response, isLoading, error }, doFetch] = useVideoChannels();
 
   useEffect(() => {
-    const isPageAlreadyRequested = requestedPages.includes(pageId)
-      ? true
-      : false;
-
     const phraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
 
     const shouldSearch =
-      pageId !== "none" &&
       !isLoading &&
-      !error &&
-      !isPageAlreadyRequested &&
       !!throttledDebouncedPhrase &&
       (phraseChanged || (!!videoChannels.length && isBottomBorderVisible));
 
@@ -48,12 +40,7 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
       window.scrollTo(0, 0);
       setLastSearchPhrase(throttledDebouncedPhrase);
       setVideoChannels([]);
-      setRequestedPages([]);
       setPageId(FIRST_PAGE_ID);
-    }
-
-    if (phraseChanged && shouldSearch) {
-      setRequestedPages([...requestedPages, pageId]);
     }
 
     if (shouldSearch) {
@@ -68,9 +55,7 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
     isBottomBorderVisible,
     pageId,
     videoChannels,
-    error,
     lastSearchPhrase,
-    requestedPages,
     isLoading,
     doFetch,
   ]);

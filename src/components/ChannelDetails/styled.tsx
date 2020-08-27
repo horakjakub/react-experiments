@@ -1,51 +1,23 @@
-import styled from 'styled-components';
-import {device} from 'global-styles/breakpoints-devices';
+import styled from "styled-components";
+import { device } from "global-styles/breakpoints-devices";
 
-export const Blanket = styled.div`
-  position: fixed;
+export const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  top: 0;
-`;
-
-export const CloseButton = styled.button`
-  background: transparent;
-  font-family: Lato;
-  font-size: 2em;
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  border: 0;
-  color: white;
-  font-weight: bold;
-`;
-
-export const Modal = styled.div`
-  width: 100vw;
-  background: white;
-  box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   display: grid;
-  height: 48em;
-  max-width: 64em;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    'description photo'
-    'description photo';
+    "description photo"
+    "description photo";
   @media ${device.tablet} {
     grid-template-rows: auto 16em;
     height: initial;
     max-width: 48em;
     grid-template-areas:
-      'description description'
-      'photo photo';
+      "description description"
+      "photo photo";
   }
 `;
-
 export const Img = styled.img`
   width: 5em;
   height: 5em;

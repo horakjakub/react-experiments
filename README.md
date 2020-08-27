@@ -1,12 +1,10 @@
 # TODO 
 
 - check logic  
-- improve component names (channel details),  
 - add missing component states in storybooks (with)
 - check types 
 - update README (add info, about start with mock data)
 - add basic tests 
-- move spinner to common components
 - maybe decouple VideoChannels hooks
 
 - add mocks with error and no results 
@@ -16,7 +14,7 @@
 - better error handling (maybe in modal)
 - improve logic behind "no results" in Video Channels
 
-TEST 
+TEST
 
 - Check if cleaning container before each is necessary (maybe with `screen.debug`)
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const VideoChannelsGrid = styled.div`
   display: grid;
@@ -17,9 +17,29 @@ export const ResultsPlaceholder = styled.div`
   align-items: center;
   p {
     font-size: 2.4em;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     color: pink;
     padding: 1em;
     text-align: center;
   }
+`;
+
+export const ErrorContainer = styled.div`
+  background: rgba(0, 0, 0, 0.15); 
+   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2em;
+  color: white;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.8em;
+  text-align: center;
+  > h2 {
+    margin: 0.4em 0;
+  }
+
 `;

@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { VideoChannelType } from "common-types/video-channel.type";
 import DetailsModal from "components/ChannelDetails";
-import { ImgError } from "common-components";
+import ImgError from "common-components/ImgError";
 import {
   VideoChannelWrapper,
   VideoChannelBox,

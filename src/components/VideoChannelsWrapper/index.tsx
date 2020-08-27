@@ -1,6 +1,11 @@
-import React, { ReactElement } from "react";
-import Spinner from "components/Spinner";
-import { VideoChannelsGrid, ResultsPlaceholder } from "./styled";
+import React, { ReactElement, useState, useEffect } from "react";
+import Spinner from "common-components/Spinner";
+import Modal from "common-components/Modal";
+import {
+  VideoChannelsGrid,
+  ResultsPlaceholder,
+  ErrorContainer,
+} from "./styled";
 
 export default VideoChannelsWrapper;
 
@@ -19,6 +24,14 @@ function VideoChannelsWrapper({
   searchPhrase,
   error,
 }: Props) {
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (error) {
+      setShowErrorMessage(true);
+    }
+  }, [error, showErrorMessage]);
+
   return (
     <VideoChannelsGrid data-testid="video-channels-wrapper">
       {children}
@@ -32,7 +45,25 @@ function VideoChannelsWrapper({
           <p>Oops, there is no results for "{searchPhrase}".</p>
         </ResultsPlaceholder>
       )}
-      {error && error.message.includes("403") && <div>Error message</div>}
+      {!isLoading &&
+        error &&
+        error.message.includes("403") &&
+        showErrorMessage && (
+          <Modal
+            closeModal={() => {
+              setShowErrorMessage(false);
+            }}
+          >
+            <ErrorContainer>
+              <h2>403 Error</h2>
+              <p>
+                Sorry. If you see this message, the app probably exceeded the
+                YouTube API quota limit. If you would like to use an app with
+                mocked data check README.MD file on an app Github page.
+              </p>
+            </ErrorContainer>
+          </Modal>
+        )}
     </VideoChannelsGrid>
   );
 }

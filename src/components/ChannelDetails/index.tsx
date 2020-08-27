@@ -1,14 +1,12 @@
 import React, { ReactElement, useState } from "react";
-import { createPortal } from "react-dom";
 import { VideoType } from "common-types/video.type";
-import Spinner from "components/Spinner";
 import Video from "components/Video";
-import { ImgError } from "common-components";
+import Spinner from "common-components/Spinner";
+import Modal from "common-components/Modal";
+import ImgError from "common-components/ImgError";
 import useVideos from "hooks/useVideos";
 import {
-  Blanket,
-  CloseButton,
-  Modal,
+  Container,
   Img,
   VideosBox,
   Header,
@@ -18,9 +16,8 @@ import {
   Content,
   VideosPlaceholder,
 } from "./styled";
-import { witchOnDirectClick } from './helpers';
 
-export default ChannelDetailsModalWithPortal;
+export default ChannelDetailsModalWithVideos;
 
 type Props = {
   id: string;
@@ -29,13 +26,6 @@ type Props = {
   description: string;
   closeModal: () => void;
 };
-
-function ChannelDetailsModalWithPortal(props: Props): ReactElement {
-  return createPortal(
-    <ChannelDetailsModalWithVideos {...props} />,
-    document.body
-  );
-}
 
 function ChannelDetailsModalWithVideos(props: Props): ReactElement {
   const { id } = props;
@@ -62,9 +52,8 @@ export function ChannelDetailsModal({
   const [isImgError, setIsImgError] = useState<boolean>(false);
 
   return (
-    <Blanket onClick={witchOnDirectClick(closeModal)}>
-      <CloseButton onClick={witchOnDirectClick(closeModal)}>X</CloseButton>
-      <Modal>
+    <Modal closeModal={closeModal}>
+      <Container>
         <Content>
           <Header>
             {isImgError ? (
@@ -88,7 +77,7 @@ export function ChannelDetailsModal({
               <Video key={video.id} {...video} />
             ))}
         </VideosBox>
-      </Modal>
-    </Blanket>
+      </Container>
+    </Modal>
   );
 }
