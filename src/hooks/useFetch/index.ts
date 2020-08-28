@@ -33,7 +33,10 @@ function useFetch<T>({
         .then((res) => {
           if ("error" in res) {
             throw new Error(
-              JSON.stringify({ message: "server error", error: res.error })
+              JSON.stringify({
+                message: "server error",
+                error: res.error,
+              })
             );
           }
           setResponse(res);
