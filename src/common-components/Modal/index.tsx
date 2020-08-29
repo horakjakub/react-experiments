@@ -6,8 +6,7 @@ import { witchOnDirectClick } from "./helpers";
 export default Modal;
 
 function Modal({
-  children,
-  closeModal,
+  children, closeModal,
 }: {
   children: ReactElement;
   closeModal: () => void;

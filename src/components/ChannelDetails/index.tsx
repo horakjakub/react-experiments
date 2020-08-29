@@ -15,6 +15,7 @@ import {
   Hr,
   Content,
   VideosPlaceholder,
+  VideoPlaceholder,
 } from "./styled";
 
 export default ChannelDetailsModalWithVideos;
@@ -76,6 +77,11 @@ export function ChannelDetailsModal({
             videos.map((video: VideoType) => (
               <Video key={video.id} {...video} />
             ))}
+          {videos &&
+            videos.length < 6 &&
+            new Array(6 - videos.length)
+              .fill(null)
+              .map((el, idx) => <VideoPlaceholder no={idx} />)}
         </VideosBox>
       </Container>
     </Modal>

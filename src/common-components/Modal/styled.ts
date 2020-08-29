@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "global-styles/breakpoints-devices";
 
 export const Blanket = styled.div`
   position: fixed;
@@ -30,4 +31,8 @@ export const ModalContainer = styled.div`
   box-shadow: -0.5em 1.3em 1.8em 0.3em rgba(0, 0, 0, 0.1);
   height: 48em;
   max-width: 64em;
+    @media ${device.tablet} {
+      grid-template-rows: auto 16em;
+      height: initial;
+      max-width: 48em;
 `;

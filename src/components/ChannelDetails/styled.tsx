@@ -34,9 +34,9 @@ export const VideosBox = styled.div`
     width: 100vw;
     max-width: 48em;
     width: 100vw;
-    > a:nth-child(3),
-    > a:nth-child(4),
-    > a:nth-child(5) {
+    > :nth-child(4),
+    > :nth-child(5),
+    > :nth-child(6) {
       display: none;
     }
     flex-wrap: nowrap;
@@ -81,4 +81,16 @@ export const VideosPlaceholder = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`;
+
+export const VideoPlaceholder = styled.div`
+  max-width: 16em;
+  max-height: 16em;
+  width: 100vw; 
+  height: 100vh;
+  background: ${({ no }: { no: number }) => {
+    if (no % 3 === 1) return "#F8B3FF"; 
+    if (no % 3 === 2) return "#FFC0CB";
+    return "#FFC5B3";
+  }};
 `;

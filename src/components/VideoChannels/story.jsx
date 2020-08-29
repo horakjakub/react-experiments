@@ -1,9 +1,9 @@
 import React from 'react';
 import {action} from '@storybook/addon-actions';
 import GlobalStyle from 'global-styles/storybook-decorator';
-import {VideoChannel} from 'components/VideoChannel';
+import VideoChannelWithModal, {VideoChannel} from 'components/VideoChannel';
 import {videoChannelsMock} from 'utils/mocks';
-import {VideoChannelsWrapper} from './index';
+import VideoChannelsWrapper from 'components/VideoChannelsWrapper';
 
 export default {
   title: 'Video Channels',
@@ -25,5 +25,9 @@ export const VideoChannelsDefault = () => (
 export const VideoChannelsLoading = () => <VideoChannelsWrapper isLoading />;
 
 export const VideoChannelsNoMoreResults = () => (
-  <VideoChannelsWrapper isNoMoreResults />
+  <VideoChannelsWrapper isNoMoreResults searchPhrase={"cat"}/>
 );
+
+export const VideoChannelsError = () => (
+  <VideoChannelsWrapper error={new Error("cat")} searchPhrase={"cat"} />
+)
