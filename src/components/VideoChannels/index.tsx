@@ -32,7 +32,7 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
     const phraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
 
     const shouldSearch =
-    !(pageId === "none" && !phraseChanged) &&
+      !(pageId === "none" && !phraseChanged) &&
       !isLoading &&
       !!throttledDebouncedPhrase &&
       (phraseChanged || (!!videoChannels.length && isBottomBorderVisible));

@@ -19,11 +19,12 @@ export const videoChannelsApiResponse: YTSearchResponseChannel = searchResponseM
 
 export function getModifiedSearchResponseMock(
   response: YTSearchResponseChannel,
-  modifier: number
+  modifier: number,
+  isNoMoreResults?: boolean
 ): YTSearchResponseChannel {
   const responseCopy = JSON.parse(JSON.stringify(response));
   responseCopy.etag = `${responseCopy.etag}${modifier}`;
-  responseCopy.nextPageToken = modifier;
+  responseCopy.nextPageToken = isNoMoreResults ? modifier : "none";
   responseCopy.items = responseCopy.items.map((item: any) => {
     item.snippet.channelId = `${item.snippet.channelId}${modifier}`;
     return item;
@@ -45,6 +46,12 @@ export function fetchMock(url: string, response: any): Promise<Response> {
     },
   };
 
+  if (response instanceof Error) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => reject(response), 100);
+    });
+  }
+
   return new Promise((resolve) =>
     setTimeout(
       () => resolve(rawResponseMock as Response),
@@ -64,6 +71,15 @@ export function fetchMockBasedOnUrl(url: string): Promise<Response> {
   }
   if (url.includes("videos")) {
     return fetchMock(url, videosResponseMock);
+  }
+  if (url.includes("search") && url.includes("error")) {
+    return fetchMock(url, new Error("cat"));
+  }
+  if (url.includes("search") && url.includes("no results")) {
+    return fetchMock(
+      url,
+      getModifiedSearchResponseMock(videoChannelsApiResponse, 1, true)
+    );
   }
   if (url.includes("search")) {
     counter++;
