@@ -16,6 +16,20 @@ type Props = {
 
 const FIRST_PAGE_ID = "firstPageId";
 
+function areMoreResultsForSearch(
+  pageId: string,
+  isSearchPhraseChanged: boolean
+): boolean {
+  return !(pageId === "none" && !isSearchPhraseChanged);
+}
+
+function isBottomBorderStartedToBeVisible(
+  videoChannelsCount: number,
+  isBottomBorderVisible: boolean
+) {
+  return !!videoChannelsCount && isBottomBorderVisible;
+}
+
 function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   const [videoChannels, setVideoChannels] = useState<VideoChannelType[]>([]);
   const [pageId, setPageId] = useState<string>(FIRST_PAGE_ID);
@@ -27,43 +41,54 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
   const [lastSearchPhrase, setLastSearchPhrase] = useState<string | null>(null);
   const [lastResponseId, setLastResponseId] = useState<string>();
   const [{ response, isLoading, error }, doFetch] = useVideoChannels();
-
+  const [isPhraseChanged, setPhraseChanged] = useState<boolean>(true);
+  // add useContext
   useEffect(() => {
-    const phraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
-
-    const shouldSearch =
-      !(pageId === "none" && !phraseChanged) &&
+    if (
+      areMoreResultsForSearch(pageId, isPhraseChanged) &&
       !isLoading &&
       !!throttledDebouncedPhrase &&
-      (phraseChanged || (!!videoChannels.length && isBottomBorderVisible));
+      (isPhraseChanged ||
+        isBottomBorderStartedToBeVisible(
+          videoChannels.length,
+          isBottomBorderVisible
+        ))
+    ) {
+      doFetch(
+        throttledDebouncedPhrase || "",
+        20,
+        pageId === FIRST_PAGE_ID || isPhraseChanged ? null : pageId
+      );
+    }
+  }, [
+    isBottomBorderVisible,
+    pageId,
+    videoChannels,
+    isLoading,
+    doFetch,
+    throttledDebouncedPhrase,
+    isPhraseChanged,
+  ]);
 
-    if (phraseChanged) {
+  useEffect(() => {
+    const isSearchPhraseChanged = lastSearchPhrase !== throttledDebouncedPhrase;
+    setPhraseChanged(isSearchPhraseChanged);
+
+    if (isSearchPhraseChanged) {
       window.scrollTo(0, 0);
       setLastSearchPhrase(throttledDebouncedPhrase);
       setVideoChannels([]);
       setPageId(FIRST_PAGE_ID);
     }
-
-    if (shouldSearch) {
-      doFetch(
-        throttledDebouncedPhrase || "",
-        20,
-        pageId === FIRST_PAGE_ID || phraseChanged ? null : pageId
-      );
-    }
-  }, [
-    throttledDebouncedPhrase,
-    isBottomBorderVisible,
-    pageId,
-    videoChannels,
-    lastSearchPhrase,
-    isLoading,
-    doFetch,
-  ]);
+  }, [lastSearchPhrase, throttledDebouncedPhrase]);
 
   useEffect(() => {
-    if (!response || response.etag === lastResponseId) return;
-    setLastResponseId(response.etag);
+    if (!response) return;
+    const { nextPageToken, etag } = response;
+
+    if (etag === lastResponseId) return;
+    
+    setLastResponseId(etag);
 
     const newChannels = differenceWith(
       mapToVideoChannels(response),
@@ -75,7 +100,6 @@ function VideoChannels({ searchPhrase, wrapperRef }: Props): ReactElement {
       setVideoChannels([...videoChannels, ...newChannels]);
     }
 
-    const { nextPageToken } = response;
     if (nextPageToken !== pageId) {
       setPageId(nextPageToken || "none");
     }

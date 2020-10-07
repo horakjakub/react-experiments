@@ -79,6 +79,7 @@ export function ChannelDetailsModal({
             ))}
           {videos &&
             videos.length < 6 &&
+            !isLoading &&
             new Array(6 - videos.length)
               .fill(null)
               .map((el, idx) => <VideoPlaceholder no={idx} />)}

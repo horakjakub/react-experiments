@@ -1,18 +1,8 @@
 # TODO 
 
-- check logic  
-- add missing component states in storybooks (with)
-- check types 
 - update README (add info, about start with mock data)
 - add basic tests 
-- maybe decouple VideoChannels hooks
-
-- add mocks with error and no results 
-- improve styles for not so many videos 
 - better prettier settings
-- test on mobile devices 
-- better error handling (maybe in modal)
-- improve logic behind "no results" in Video Channels
 
 TEST
 

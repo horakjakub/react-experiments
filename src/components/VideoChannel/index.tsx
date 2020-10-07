@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, memo } from "react";
 import { VideoChannelType } from "common-types/video-channel.type";
 import DetailsModal from "components/ChannelDetails";
 import ImgError from "common-components/ImgError";
@@ -10,7 +10,7 @@ import {
   Description,
 } from "./styled";
 
-export default VideoChannelWithModal;
+export default memo(VideoChannelWithModal);
 
 function VideoChannelWithModal(props: VideoChannelType): ReactElement {
   const [showVideos, setShowVideos] = useState<boolean>(false);
@@ -34,7 +34,7 @@ type Props = VideoChannelType & {
   onClick: () => void;
 };
 
-export function VideoChannel({
+function VideoChannel({
   onClick,
   title,
   description,
