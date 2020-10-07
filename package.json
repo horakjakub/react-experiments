@@ -40,7 +40,8 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
     "format": "prettier --write src/**/*.{ts,tsx,css}",
-    "isready": "npm run format && npm run lint && npm run build"
+    "isready": "npm run format && npm run lint && npm run build",
+    "start-heroku": "npm install --only=dev && npm install && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
