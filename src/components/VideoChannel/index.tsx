@@ -34,7 +34,7 @@ type Props = VideoChannelType & {
   onClick: () => void;
 };
 
-function VideoChannel({
+export function VideoChannel({
   onClick,
   title,
   description,
